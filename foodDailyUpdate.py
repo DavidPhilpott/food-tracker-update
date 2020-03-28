@@ -12,8 +12,8 @@ import os
 
 SCRIPT_NAME = "Food Daily Transfer"
 
-GOOGLE_AUTH_FILENAME = r'pyScripts/GoogleAuth.json'
-LOG_FILENAME = r'pyScripts/FoodDailyTransferLog.txt'
+GOOGLE_AUTH_FILENAME = r'projects/food-tracker-update/GoogleAuth.json'
+LOG_FILENAME = r'projects/food-tracker-update/FoodDailyTransferLog.txt'
 
 def assembleAbsolutePath(fileName):
     
@@ -152,4 +152,4 @@ def main():
     logFile.close()
     print("Done.")
 
-main()
+#main()
