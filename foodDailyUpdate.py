@@ -103,17 +103,17 @@ def main():
 
         if len(transferDate) > 0:
             logFile.write("Sleeping for 101 seconds\n")
-            time.sleep(101)
+            #time.sleep(101)
             logFile.write("transferring lists to historical tracker\n")
             for i in range(0, len(transferDate)):
                 row = str(startRow + i)
 
-                foodHistory.update_acell('A%s' %row, transferDate[i])
-                foodHistory.update_acell('B%s' %row, transferItem[i])
-                foodHistory.update_acell('C%s' %row, transferQuantity[i])
-                foodHistory.update_acell('D%s' %row, transferCalorie[i])
-                foodHistory.update_acell('E%s' %row, transferProtein[i])
-                foodHistory.update_acell('F%s' %row, transferVeg[i])
+                #foodHistory.update_acell('A%s' %row, transferDate[i])
+                #foodHistory.update_acell('B%s' %row, transferItem[i])
+                #foodHistory.update_acell('C%s' %row, transferQuantity[i])
+                #foodHistory.update_acell('D%s' %row, transferCalorie[i])
+                #foodHistory.update_acell('E%s' %row, transferProtein[i])
+                #foodHistory.update_acell('F%s' %row, transferVeg[i])
                 
             logFile.write("finished transfering items\n")
             
@@ -122,27 +122,27 @@ def main():
 
         if len(dfAuto)>1:
             logFile.write("Sleeping for 101 seconds\n")
-            time.sleep(101)
+            #time.sleep(101)
             logFile.write("Blanking auto items\n")
             for i in range(1, len(dfAuto)):
                 row = str(i + 1)
-                foodDailyAuto.update_acell('A%s' %row, "")
-                foodDailyAuto.update_acell('B%s' %row, "")
+                #foodDailyAuto.update_acell('A%s' %row, "")
+                #foodDailyAuto.update_acell('B%s' %row, "")
             logFile.write("finished\n")
         else:
             logFile.write("No auto items to blank\n")
 
         if len(dfManual)>1:
             logFile.write("Sleeping for 101 seconds\n")
-            time.sleep(101)
+            #time.sleep(101)
             logFile.write("Blanking manual items\n")
             for i in range(1, len(dfManual)):
                 row = str(i+1)
-                foodDailyManual.update_acell('A%s' %row, "")
-                foodDailyManual.update_acell('B%s' %row, "")
-                foodDailyManual.update_acell('C%s' %row, "")
-                foodDailyManual.update_acell('D%s' %row, "")
-                foodDailyManual.update_acell('E%s' %row, "")
+                #foodDailyManual.update_acell('A%s' %row, "")
+                #foodDailyManual.update_acell('B%s' %row, "")
+                #foodDailyManual.update_acell('C%s' %row, "")
+                #foodDailyManual.update_acell('D%s' %row, "")
+                #foodDailyManual.update_acell('E%s' %row, "")
             logFile.write("finished\n")
         else:
             logFile.write("no manual items to blank\n")

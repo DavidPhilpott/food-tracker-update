@@ -2,7 +2,9 @@ import mock
 
 from foodDailyUpdate import assembleAbsolutePath
 from foodDailyUpdate import requestGoogleSheetClient
+from foodDailyUpdate import main
 
+from gspread import Worksheet
 
 class TestAssembleAbsolutePath:
     @mock.patch('os.path.expanduser')
@@ -16,3 +18,15 @@ class TestRequestGoogleSheetClient:
         credentials_path = "/home/david/projects/food-tracker-update/GoogleAuth.json"
         client = requestGoogleSheetClient(credentials_path)
         assert str(type(client)) == "<class 'gspread.client.Client'>"
+
+
+class TestMain:
+    @mock.patch("foodDailyUpdate.assembleAbsolutePath")
+    def test_update_commands_passed_as_expected(self,
+                                                mock_assembleAbsolutePath):
+        credentials_path = "/home/david/projects/food-tracker-update/GoogleAuth.json"
+        log_file_path = "/home/david/projects/food-tracker-update/FoodDailyTransferLog.txt"
+        mock_assembleAbsolutePath.side_effect = [log_file_path, credentials_path]
+        main()
+        assert False
+
