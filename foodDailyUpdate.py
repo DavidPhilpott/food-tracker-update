@@ -21,16 +21,16 @@ def assembleAbsolutePath(fileName):
     
     return absolutePath
 
-def requestGoogleSheetClient(credentialsPath):
+
+def request_google_sheet_client(credentials_path):
+    service_scope = ['https://spreadsheets.google.com/feeds',
+                     'https://www.googleapis.com/auth/drive']
     
-    scope = ['https://spreadsheets.google.com/feeds',
-             'https://www.googleapis.com/auth/drive']
-    
-    credentials = ServiceAccountCredentials.from_json_keyfile_name(credentialsPath, scope)
-    sheetsClient = gspread.authorize(credentials)
-    
-    return sheetsClient   
-    
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(credentials_path, service_scope)
+    sheets_client = gspread.authorize(credentials)
+    return sheets_client
+
+
 def main():
 
     print("Running %s..." %SCRIPT_NAME, end = '')
@@ -46,7 +46,7 @@ def main():
         authPath = assembleAbsolutePath(GOOGLE_AUTH_FILENAME)
 
         logFile.write("Requesting client from google using auth\n")
-        sheets = requestGoogleSheetClient(credentialsPath=authPath)
+        sheets = request_google_sheet_client(credentials_path=authPath)
 
         logFile.write("Opening food daily sheet\n")
         foodDaily = sheets.open_by_key('1rpHCHOHrdWr7LzL4lbc7xxXzuQ_UAIMl26MU2fbzyvU')
@@ -103,7 +103,7 @@ def main():
 
         if len(transferDate) > 0:
             logFile.write("Sleeping for 101 seconds\n")
-            #time.sleep(101)
+            time.sleep(101)
             logFile.write("transferring lists to historical tracker\n")
             for i in range(0, len(transferDate)):
                 row = str(startRow + i)
@@ -122,7 +122,7 @@ def main():
 
         if len(dfAuto)>1:
             logFile.write("Sleeping for 101 seconds\n")
-            #time.sleep(101)
+            time.sleep(101)
             logFile.write("Blanking auto items\n")
             for i in range(1, len(dfAuto)):
                 row = str(i + 1)
@@ -134,7 +134,7 @@ def main():
 
         if len(dfManual)>1:
             logFile.write("Sleeping for 101 seconds\n")
-            #time.sleep(101)
+            time.sleep(101)
             logFile.write("Blanking manual items\n")
             for i in range(1, len(dfManual)):
                 row = str(i+1)
