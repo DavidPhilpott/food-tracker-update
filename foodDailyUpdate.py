@@ -34,6 +34,11 @@ def get_all_sheet_values(google_sheet):
     return df_result
 
 
+def get_cell_value(google_sheet, cell_index):
+    cell_value = google_sheet.acell(cell_index).value
+    return cell_value
+
+
 def main():
     logger.info("Assembling google auth path\n")
     auth_path = assemble_absolute_path(GOOGLE_AUTH_FILENAME)
@@ -44,7 +49,8 @@ def main():
     logger.info("Opening food core sheet\n")
     food_core = open_google_worksheet(google_client=sheets, sheet_key='1QDq6rDSosVcLE-TekFcxGDLqvbn_leVa5vUo8uJMTSI')
     logger.info("Taking current date\n")
-    current_date = food_daily.worksheet('Info').acell('C2').value
+    food_daily_info = food_daily.worksheet('Info')
+    current_date = get_cell_value(google_sheet=food_daily_info, cell_index='C2')
     logger.info("Opening 'Auto' sheet\n")
     food_daily_auto = food_daily.worksheet('Auto')
     logger.info("Opening 'Manual' sheet\n")
