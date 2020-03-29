@@ -48,3 +48,19 @@ class TestStateSet:
         with pytest.raises(TypeError) as exc_info:
             state.set("Test Var")
         assert exc_info is not None, "State did not throw error when trying to set a var without passing a dict"
+
+
+class TestStateInfo:
+    def test_message_logged_correctly(self, caplog):
+        test_message = "This is an info log"
+        state = State()
+        state.info(test_message)
+        assert len(caplog.messages) == 1, "Expected exactly one log present"
+        assert caplog.messages[0] == test_message, "Incorrect log written"
+
+    def test_non_string_logged_correctly(self, caplog):
+        test_object = State()
+        state = State()
+        state.info(test_object)
+        assert len(caplog.messages) == 1, "Expected exactly one log present"
+        assert caplog.messages[0] == str(test_object), "Incorrect log written"

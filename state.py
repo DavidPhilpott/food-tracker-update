@@ -21,3 +21,6 @@ class State:
         if len(key_pair.keys()) != 1:
             raise ValueError(f"Key-pair submitted must be length 1. Current key-pair dict is length {len(key_pair.keys())}.")
         self._state.update(key_pair)
+
+    def info(self, message):
+        self._logger.info(message)

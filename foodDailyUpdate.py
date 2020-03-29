@@ -3,6 +3,7 @@ import time
 import gspread
 import logging
 from oauth2client.service_account import ServiceAccountCredentials
+from state import State
 
 GOOGLE_AUTH_FILENAME = r'pyScripts/GoogleAuth.json'
 
