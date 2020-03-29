@@ -78,7 +78,7 @@ def main():
     transfer_calorie = []
     transfer_protein = []
     transfer_veg = []
-    logger.info("Appending auto items\n")
+    logger.info("Appending auto items")
     if len(df_auto_daily) > 1:
         for i in range(1, len(df_auto_daily)):
             transfer_date.append(current_date)
@@ -88,7 +88,7 @@ def main():
             transfer_protein.append("")
             transfer_veg.append("")
 
-    logger.info("Appending manual items\n")
+    logger.info("Appending manual items")
     if len(df_manual_daily) > 1:
         for i in range(1, len(df_manual_daily)):
             transfer_date.append(current_date)
@@ -99,9 +99,9 @@ def main():
             transfer_veg.append(df_manual_daily[i][4])
     start_row = len(df_food_history) + 1
     if len(transfer_date) > 0:
-        logger.info("Sleeping for 101 seconds\n")
+        logger.info("Sleeping for 101 seconds")
         time.sleep(101)
-        logger.info("transferring lists to historical tracker\n")
+        logger.info("transferring lists to historical tracker")
         for i in range(0, len(transfer_date)):
             row = str(start_row + i)
             update_cell_value(google_sheet=food_history, cell_index='A%s' % row, value=transfer_date[i])
@@ -110,25 +110,25 @@ def main():
             update_cell_value(google_sheet=food_history, cell_index='D%s' % row, value=transfer_calorie[i])
             update_cell_value(google_sheet=food_history, cell_index='E%s' % row, value=transfer_protein[i])
             update_cell_value(google_sheet=food_history, cell_index='F%s' % row, value=transfer_veg[i])
-        logger.info("finished transfering items\n")
+        logger.info("finished transferring items")
 
     else:
-        logger.info("Nothing to transfer\n")
+        logger.info("Nothing to transfer")
     if len(df_auto_daily) > 1:
-        logger.info("Sleeping for 101 seconds\n")
+        logger.info("Sleeping for 101 seconds")
         time.sleep(101)
-        logger.info("Blanking auto items\n")
+        logger.info("Blanking auto items")
         for i in range(1, len(df_auto_daily)):
             row = str(i + 1)
             update_cell_value(google_sheet=food_daily_auto, cell_index='A%s' % row, value="")
             update_cell_value(google_sheet=food_daily_auto, cell_index='B%s' % row, value="")
-        logger.info("finished\n")
+        logger.info("finished")
     else:
-        logger.info("No auto items to blank\n")
+        logger.info("No auto items to blank")
     if len(df_manual_daily) > 1:
-        logger.info("Sleeping for 101 seconds\n")
+        logger.info("Sleeping for 101 seconds")
         time.sleep(101)
-        logger.info("Blanking manual items\n")
+        logger.info("Blanking manual items")
         for i in range(1, len(df_manual_daily)):
             row = str(i+1)
             update_cell_value(google_sheet=food_daily_manual, cell_index='A%s' % row, value="")
@@ -136,11 +136,11 @@ def main():
             update_cell_value(google_sheet=food_daily_manual, cell_index='C%s' % row, value="")
             update_cell_value(google_sheet=food_daily_manual, cell_index='D%s' % row, value="")
             update_cell_value(google_sheet=food_daily_manual, cell_index='E%s' % row, value="")
-        logger.info("finished\n")
+        logger.info("finished")
     else:
-        logger.info("no manual items to blank\n")
+        logger.info("no manual items to blank")
 
-    logger.info("Finished running script\n")
+    logger.info("Finished running script")
     print("Done.")
 
 #main()
