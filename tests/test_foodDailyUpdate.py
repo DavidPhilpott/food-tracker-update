@@ -32,11 +32,13 @@ class TestOpenGoogleWorksheet:
 
 
 class TestMain:
+    @mock.patch("foodDailyUpdate.update_cell_value")
     @mock.patch("foodDailyUpdate.assemble_absolute_path")
     @mock.patch("time.sleep")
     def test_update_commands_passed_as_expected(self,
                                                 mock_sleep,
-                                                mock_assemble_absolute_path):
+                                                mock_assemble_absolute_path,
+                                                mock_update_cell_value):
         credentials_path = "/home/david/projects/food-tracker-update/GoogleAuth.json"
         mock_assemble_absolute_path.side_effect = [credentials_path]
         main()

@@ -39,31 +39,39 @@ def get_cell_value(google_sheet, cell_index):
     return cell_value
 
 
+def update_cell_value(google_sheet, cell_index, value):
+    google_sheet.update_acell(cell_index, value)
+    return
+
+
 def main():
-    logger.info("Assembling google auth path\n")
+    logger.info("Assembling google auth path")
     auth_path = assemble_absolute_path(GOOGLE_AUTH_FILENAME)
-    logger.info("Requesting client from google using auth\n")
+    logger.info("Requesting client from google using auth")
     sheets = request_google_sheet_client(credentials_path=auth_path)
-    logger.info("Opening food daily sheet\n")
+    logger.info("Opening food daily and core worksheets")
     food_daily = open_google_worksheet(google_client=sheets, sheet_key='1rpHCHOHrdWr7LzL4lbc7xxXzuQ_UAIMl26MU2fbzyvU')
-    logger.info("Opening food core sheet\n")
     food_core = open_google_worksheet(google_client=sheets, sheet_key='1QDq6rDSosVcLE-TekFcxGDLqvbn_leVa5vUo8uJMTSI')
-    logger.info("Taking current date\n")
+
+    logger.info("Opening specific sheets")
     food_daily_info = food_daily.worksheet('Info')
-    current_date = get_cell_value(google_sheet=food_daily_info, cell_index='C2')
-    logger.info("Opening 'Auto' sheet\n")
     food_daily_auto = food_daily.worksheet('Auto')
-    logger.info("Opening 'Manual' sheet\n")
     food_daily_manual = food_daily.worksheet('Manual')
-    logger.info("Opening 'Historical Tracker\n")
     food_history = food_core.worksheet('Historical Food Tracker')
-    logger.info("Reading 'Auto' sheet\n")
+
+    logger.info("Taking current date")
+    current_date = get_cell_value(google_sheet=food_daily_info, cell_index='C2')
+
+    logger.info("Reading 'Auto' sheet")
     df_auto_daily = get_all_sheet_values(food_daily_auto)
-    logger.info("Reading 'Manual' sheet\n")
+
+    logger.info("Reading 'Manual' sheet")
     df_manual_daily = get_all_sheet_values(food_daily_manual)
-    logger.info("Reading 'Historical Tracker' sheet\n")
+
+    logger.info("Reading 'Historical Tracker' sheet")
     df_food_history = get_all_sheet_values(food_history)
-    logger.info("Initialising transfer lists\n")
+
+    logger.info("Initialising transfer lists")
     transfer_date = []
     transfer_item = []
     transfer_quantity = []
@@ -96,13 +104,12 @@ def main():
         logger.info("transferring lists to historical tracker\n")
         for i in range(0, len(transfer_date)):
             row = str(start_row + i)
-            #food_history.update_acell('A%s' %row, transfer_date[i])
-            #food_history.update_acell('B%s' %row, transfer_item[i])
-            #food_history.update_acell('C%s' %row, transfer_quantity[i])
-            #food_history.update_acell('D%s' %row, transfer_calorie[i])
-            #food_history.update_acell('E%s' %row, transfer_protein[i])
-            #food_history.update_acell('F%s' %row, transfer_veg[i])
-
+            update_cell_value(google_sheet=food_history, cell_index='A%s' % row, value=transfer_date[i])
+            update_cell_value(google_sheet=food_history, cell_index='B%s' % row, value=transfer_item[i])
+            update_cell_value(google_sheet=food_history, cell_index='C%s' % row, value=transfer_quantity[i])
+            update_cell_value(google_sheet=food_history, cell_index='D%s' % row, value=transfer_calorie[i])
+            update_cell_value(google_sheet=food_history, cell_index='E%s' % row, value=transfer_protein[i])
+            update_cell_value(google_sheet=food_history, cell_index='F%s' % row, value=transfer_veg[i])
         logger.info("finished transfering items\n")
 
     else:
@@ -113,8 +120,8 @@ def main():
         logger.info("Blanking auto items\n")
         for i in range(1, len(df_auto_daily)):
             row = str(i + 1)
-            #food_daily_auto.update_acell('A%s' %row, "")
-            #food_daily_auto.update_acell('B%s' %row, "")
+            update_cell_value(google_sheet=food_daily_auto, cell_index='A%s' % row, value="")
+            update_cell_value(google_sheet=food_daily_auto, cell_index='B%s' % row, value="")
         logger.info("finished\n")
     else:
         logger.info("No auto items to blank\n")
@@ -124,11 +131,11 @@ def main():
         logger.info("Blanking manual items\n")
         for i in range(1, len(df_manual_daily)):
             row = str(i+1)
-            #food_daily_manual.update_acell('A%s' %row, "")
-            #food_daily_manual.update_acell('B%s' %row, "")
-            #food_daily_manual.update_acell('C%s' %row, "")
-            #food_daily_manual.update_acell('D%s' %row, "")
-            #food_daily_manual.update_acell('E%s' %row, "")
+            update_cell_value(google_sheet=food_daily_manual, cell_index='A%s' % row, value="")
+            update_cell_value(google_sheet=food_daily_manual, cell_index='B%s' % row, value="")
+            update_cell_value(google_sheet=food_daily_manual, cell_index='C%s' % row, value="")
+            update_cell_value(google_sheet=food_daily_manual, cell_index='D%s' % row, value="")
+            update_cell_value(google_sheet=food_daily_manual, cell_index='E%s' % row, value="")
         logger.info("finished\n")
     else:
         logger.info("no manual items to blank\n")
