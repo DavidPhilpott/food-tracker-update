@@ -24,9 +24,14 @@ def request_google_sheet_client(credentials_path):
     return sheets_client
 
 
-def open_google_sheet(google_client, sheet_key):
+def open_google_worksheet(google_client, sheet_key):
     worksheet = google_client.open_by_key(sheet_key)
     return worksheet
+
+
+def get_all_sheet_values(google_sheet):
+    df_result = google_sheet.get_all_values()
+    return df_result
 
 
 def main():
@@ -35,9 +40,9 @@ def main():
     logger.info("Requesting client from google using auth\n")
     sheets = request_google_sheet_client(credentials_path=auth_path)
     logger.info("Opening food daily sheet\n")
-    food_daily = open_google_sheet(google_client=sheets, sheet_key='1rpHCHOHrdWr7LzL4lbc7xxXzuQ_UAIMl26MU2fbzyvU')
+    food_daily = open_google_worksheet(google_client=sheets, sheet_key='1rpHCHOHrdWr7LzL4lbc7xxXzuQ_UAIMl26MU2fbzyvU')
     logger.info("Opening food core sheet\n")
-    food_core = open_google_sheet(google_client=sheets, sheet_key='1QDq6rDSosVcLE-TekFcxGDLqvbn_leVa5vUo8uJMTSI')
+    food_core = open_google_worksheet(google_client=sheets, sheet_key='1QDq6rDSosVcLE-TekFcxGDLqvbn_leVa5vUo8uJMTSI')
     logger.info("Taking current date\n")
     current_date = food_daily.worksheet('Info').acell('C2').value
     logger.info("Opening 'Auto' sheet\n")
@@ -47,11 +52,11 @@ def main():
     logger.info("Opening 'Historical Tracker\n")
     food_history = food_core.worksheet('Historical Food Tracker')
     logger.info("Reading 'Auto' sheet\n")
-    df_auto_daily = food_daily_auto.get_all_values()
+    df_auto_daily = get_all_sheet_values(food_daily_auto)
     logger.info("Reading 'Manual' sheet\n")
-    df_manual_daily = food_daily_manual.get_all_values()
+    df_manual_daily = get_all_sheet_values(food_daily_manual)
     logger.info("Reading 'Historical Tracker' sheet\n")
-    df_food_history = food_history.get_all_values()
+    df_food_history = get_all_sheet_values(food_history)
     logger.info("Initialising transfer lists\n")
     transfer_date = []
     transfer_item = []
