@@ -5,8 +5,6 @@ import gspread
 import logging
 from oauth2client.service_account import ServiceAccountCredentials
 
-SCRIPT_NAME = "Food Daily Transfer"
-
 GOOGLE_AUTH_FILENAME = r'pyScripts/GoogleAuth.json'
 
 logger = logging.getLogger(__name__)
