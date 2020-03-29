@@ -7,7 +7,7 @@ class State:
         self._logger.setLevel('DEBUG')
         self._state = {}
 
-    def get(self, key):
+    def get(self, key: str) -> str:
         if not isinstance(key, str):
             raise TypeError(f"Variables must be requested as a string. Requested type is {type(key)}.")
         try:
@@ -15,7 +15,7 @@ class State:
         except KeyError as exc:
             raise
 
-    def set(self, key_pair):
+    def set(self, key_pair: dict):
         if not isinstance(key_pair, dict):
             raise TypeError(f"Variables must be set as a single dict key-pair. Requested type is {type(key_pair)}.")
         if len(key_pair.keys()) != 1:
