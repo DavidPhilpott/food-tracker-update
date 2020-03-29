@@ -1,14 +1,8 @@
+import datetime
+import os
+import time
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-import pandas as pd
-
-import datetime
-
-import gspread_dataframe as gsdf
-
-import time
-
-import os
 
 SCRIPT_NAME = "Food Daily Transfer"
 
