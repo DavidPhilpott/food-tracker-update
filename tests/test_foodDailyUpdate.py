@@ -27,8 +27,7 @@ class TestMain:
                                                 mock_sleep,
                                                 mock_assemble_absolute_path):
         credentials_path = "/home/david/projects/food-tracker-update/GoogleAuth.json"
-        log_file_path = "/home/david/projects/food-tracker-update/FoodDailyTransferLog.txt"
-        mock_assemble_absolute_path.side_effect = [log_file_path, credentials_path]
+        mock_assemble_absolute_path.side_effect = [credentials_path]
         main()
         assert True
 
