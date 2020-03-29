@@ -8,10 +8,10 @@ from oauth2client.service_account import ServiceAccountCredentials
 SCRIPT_NAME = "Food Daily Transfer"
 
 GOOGLE_AUTH_FILENAME = r'pyScripts/GoogleAuth.json'
-LOG_FILENAME = r'pyScripts/FoodDailyTransferLog.txt'
 
 logger = logging.getLogger(__name__)
 logger.setLevel('DEBUG')
+
 
 def assemble_absolute_path(file_name):
     absolute_path = os.path.join(os.path.expanduser('~'), file_name)
