@@ -97,7 +97,7 @@ def main():
 
     else:
         logger.info("Nothing to transfer\n")
-    if len(df_auto_daily)>1:
+    if len(df_auto_daily) > 1:
         logger.info("Sleeping for 101 seconds\n")
         time.sleep(101)
         logger.info("Blanking auto items\n")
@@ -108,7 +108,7 @@ def main():
         logger.info("finished\n")
     else:
         logger.info("No auto items to blank\n")
-    if len(df_manual_daily)>1:
+    if len(df_manual_daily) > 1:
         logger.info("Sleeping for 101 seconds\n")
         time.sleep(101)
         logger.info("Blanking manual items\n")
