@@ -13,10 +13,12 @@ def assemble_absolute_path(file_name):
     return absolute_path
 
 
-def request_google_sheet_client(credentials_path):
+def request_google_sheet_client(state):
+    credentials_path = state.get("google_auth_path")
+
     service_scope = ['https://spreadsheets.google.com/feeds',
                      'https://www.googleapis.com/auth/drive']
-    
+
     credentials = ServiceAccountCredentials.from_json_keyfile_name(credentials_path, service_scope)
     sheets_client = gspread.authorize(credentials)
     return sheets_client
@@ -44,11 +46,8 @@ def update_cell_value(google_sheet, cell_index, value):
 
 def main():
     state = State()
-
-    state.info("Assembling google auth path")
-    auth_path = assemble_absolute_path(GOOGLE_AUTH_FILENAME)
     state.info("Requesting client from google using auth")
-    sheets = request_google_sheet_client(credentials_path=auth_path)
+    sheets = request_google_sheet_client(state)
     state.info("Opening food daily and core worksheets")
     food_daily = open_google_worksheet(google_client=sheets, sheet_key='1rpHCHOHrdWr7LzL4lbc7xxXzuQ_UAIMl26MU2fbzyvU')
     food_core = open_google_worksheet(google_client=sheets, sheet_key='1QDq6rDSosVcLE-TekFcxGDLqvbn_leVa5vUo8uJMTSI')

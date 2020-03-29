@@ -1,4 +1,4 @@
-import mock
+import mock, pytest
 
 from foodDailyUpdate import assemble_absolute_path
 from foodDailyUpdate import request_google_sheet_client
@@ -16,9 +16,10 @@ class TestAssembleAbsolutePath:
 
 
 class TestRequestGoogleSheetClient:
-    def test_proper_auth_client_returns(self):
+    def test_proper_auth_client_returns(self, test_state, monkeypatch):
         credentials_path = "/home/david/projects/food-tracker-update/GoogleAuth.json"
-        client = request_google_sheet_client(credentials_path)
+        monkeypatch.setenv("google_auth_path", credentials_path)
+        client = request_google_sheet_client(test_state)
         assert str(type(client)) == "<class 'gspread.client.Client'>"
 
 
