@@ -11,10 +11,22 @@ class TestStateInit:
 
 class TestStateGet:
     def test_get_retrieves_value(self):
-        test_sate = {"Test Var": "Test Val"}
+        test_state = {"Test Var": "Test Val"}
         state = State()
-        state._state = test_sate
+        state._state = test_state
         assert state.get("Test Var") == "Test Val", "State did not retrieve correct value for an existing entry"
+
+    def test_get_variable_from_env_var_if_not_on_state(self, monkeypatch):
+        state = State()
+        monkeypatch.setenv("Test Var", "Env Var Value")
+        assert state.get("Test Var") == 'Env Var Value', "Did not get value from environmental variables"
+
+    def test_get_variable_from_state_preferably(self, monkeypatch):
+        test_state = {"Test Var": "Local Var Value"}
+        state = State()
+        state._state = test_state
+        monkeypatch.setenv("Test Var", "Env Var Value")
+        assert state.get("Test Var") == 'Local Var Value', "Did not take local state version of variable value"
 
     def test_get_throw_value_error_for_non_existent_entry(self):
         state = State()

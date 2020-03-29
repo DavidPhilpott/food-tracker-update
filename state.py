@@ -1,4 +1,5 @@
 import logging
+import os
 
 
 class State:
@@ -10,10 +11,13 @@ class State:
     def get(self, key: str) -> str:
         if not isinstance(key, str):
             raise TypeError(f"Variables must be requested as a string. Requested type is {type(key)}.")
-        try:
+        if key in self._state.keys():
             return self._state[key]
-        except KeyError as exc:
-            raise
+        else:
+            try:
+                return os.environ[key]
+            except KeyError as exc_info:
+                raise
 
     def set(self, key_pair: dict):
         if not isinstance(key_pair, dict):
