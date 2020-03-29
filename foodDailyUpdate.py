@@ -27,6 +27,11 @@ def request_google_sheet_client(credentials_path):
     return sheets_client
 
 
+def open_google_sheet(google_client, sheet_key):
+    worksheet = google_client.open_by_key(sheet_key)
+    return worksheet
+
+
 def main():
     logger.info("Running %s..." %SCRIPT_NAME)
 
@@ -38,9 +43,9 @@ def main():
     logger.info("Requesting client from google using auth\n")
     sheets = request_google_sheet_client(credentials_path=authPath)
     logger.info("Opening food daily sheet\n")
-    foodDaily = sheets.open_by_key('1rpHCHOHrdWr7LzL4lbc7xxXzuQ_UAIMl26MU2fbzyvU')
+    foodDaily = open_google_sheet(google_client=sheets, sheet_key='1rpHCHOHrdWr7LzL4lbc7xxXzuQ_UAIMl26MU2fbzyvU')
     logger.info("Opening food core sheet\n")
-    foodCore = sheets.open_by_key('1QDq6rDSosVcLE-TekFcxGDLqvbn_leVa5vUo8uJMTSI')
+    foodCore = open_google_sheet(google_client=sheets, sheet_key='1QDq6rDSosVcLE-TekFcxGDLqvbn_leVa5vUo8uJMTSI')
     logger.info("Taking current date\n")
     currentDate = foodDaily.worksheet('Info').acell('C2').value
     logger.info("Opening 'Auto' sheet\n")
