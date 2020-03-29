@@ -15,11 +15,10 @@ SCRIPT_NAME = "Food Daily Transfer"
 GOOGLE_AUTH_FILENAME = r'pyScripts/GoogleAuth.json'
 LOG_FILENAME = r'pyScripts/FoodDailyTransferLog.txt'
 
-def assembleAbsolutePath(fileName):
-    
-    absolutePath = os.path.join(os.path.expanduser('~'), fileName)
-    
-    return absolutePath
+
+def assemble_absolute_path(file_name):
+    absolute_path = os.path.join(os.path.expanduser('~'), file_name)
+    return absolute_path
 
 
 def request_google_sheet_client(credentials_path):
@@ -35,7 +34,7 @@ def main():
 
     print("Running %s..." %SCRIPT_NAME, end = '')
     
-    logPath = assembleAbsolutePath(LOG_FILENAME)
+    logPath = assemble_absolute_path(LOG_FILENAME)
     
     with open(logPath, 'a') as logFile:
         
@@ -43,7 +42,7 @@ def main():
         logFile.write("\nRunning%s...\nTime: %s\n" %(SCRIPT_NAME, runTime))
         
         logFile.write("Assembling google auth path\n")
-        authPath = assembleAbsolutePath(GOOGLE_AUTH_FILENAME)
+        authPath = assemble_absolute_path(GOOGLE_AUTH_FILENAME)
 
         logFile.write("Requesting client from google using auth\n")
         sheets = request_google_sheet_client(credentials_path=authPath)

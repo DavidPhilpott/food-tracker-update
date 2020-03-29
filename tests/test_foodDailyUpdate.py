@@ -1,6 +1,6 @@
 import mock
 
-from foodDailyUpdate import assembleAbsolutePath
+from foodDailyUpdate import assemble_absolute_path
 from foodDailyUpdate import request_google_sheet_client
 from foodDailyUpdate import main
 
@@ -10,7 +10,7 @@ class TestAssembleAbsolutePath:
     @mock.patch('os.path.expanduser')
     def test_path_generates_correctly(self, mocked_expanduser):
         mocked_expanduser.return_value = "/TestHome"
-        assert assembleAbsolutePath("Test.py") == "/TestHome/Test.py"
+        assert assemble_absolute_path("Test.py") == "/TestHome/Test.py"
 
 
 class TestRequestGoogleSheetClient:
@@ -21,14 +21,14 @@ class TestRequestGoogleSheetClient:
 
 
 class TestMain:
-    @mock.patch("foodDailyUpdate.assembleAbsolutePath")
+    @mock.patch("foodDailyUpdate.assemble_absolute_path")
     @mock.patch("time.sleep")
     def test_update_commands_passed_as_expected(self,
                                                 mock_sleep,
-                                                mock_assembleAbsolutePath):
+                                                mock_assemble_absolute_path):
         credentials_path = "/home/david/projects/food-tracker-update/GoogleAuth.json"
         log_file_path = "/home/david/projects/food-tracker-update/FoodDailyTransferLog.txt"
-        mock_assembleAbsolutePath.side_effect = [log_file_path, credentials_path]
+        mock_assemble_absolute_path.side_effect = [log_file_path, credentials_path]
         main()
         assert True
 
