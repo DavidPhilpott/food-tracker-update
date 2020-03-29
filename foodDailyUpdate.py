@@ -33,11 +33,6 @@ def open_google_sheet(google_client, sheet_key):
 
 
 def main():
-    logger.info("Running %s..." %SCRIPT_NAME)
-
-    run_time = str(datetime.datetime.now())
-    logger.info("\nRunning%s...\nTime: %s\n" %(SCRIPT_NAME, run_time))
-
     logger.info("Assembling google auth path\n")
     auth_path = assemble_absolute_path(GOOGLE_AUTH_FILENAME)
     logger.info("Requesting client from google using auth\n")
