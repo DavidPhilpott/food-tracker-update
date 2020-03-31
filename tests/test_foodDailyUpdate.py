@@ -41,9 +41,10 @@ class TestMain:
                                                 mock_sleep,
                                                 mock_assemble_absolute_path,
                                                 mock_update_cell_value,
-                                                monkeypatch):
+                                                monkeypatch,
+                                                test_state):
         credentials_path = "/home/david/projects/food-tracker-update/GoogleAuth.json"
         monkeypatch.setenv("google_auth_path", "/home/david/projects/food-tracker-update/GoogleAuth.json")
-        main()
+        main(test_state)
         assert True
 

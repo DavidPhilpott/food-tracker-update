@@ -4,6 +4,7 @@ import gspread
 import logging
 from oauth2client.service_account import ServiceAccountCredentials
 from State import State
+from GoogleSheetSession import GoogleSheetSession
 
 GOOGLE_AUTH_FILENAME = r'pyScripts/GoogleAuth.json'
 
@@ -43,10 +44,11 @@ def update_cell_value(google_sheet, cell_index, value):
     return
 
 
-def main():
-    state = State()
+def main(state=None):
+    if state is None:
+        state = State()
     state.info("Requesting client from google using auth")
-    sheets = request_google_sheet_client(state)
+    sheets = GoogleSheetSession(state).connection
     state.info("Opening food daily and core worksheets")
     food_daily = open_google_worksheet(google_client=sheets, sheet_key='1rpHCHOHrdWr7LzL4lbc7xxXzuQ_UAIMl26MU2fbzyvU')
     food_core = open_google_worksheet(google_client=sheets, sheet_key='1QDq6rDSosVcLE-TekFcxGDLqvbn_leVa5vUo8uJMTSI')
