@@ -1,7 +1,9 @@
 import pytest
-from state import State
+from State import State
+
 
 @pytest.fixture
 def test_state():
-    test_sate = State()
-    return test_sate
+    test_state = State()
+    test_state.set({"google_auth_path": "/home/david/projects/food-tracker-update/GoogleAuth.json"})
+    return test_state

@@ -3,7 +3,7 @@ import time
 import gspread
 import logging
 from oauth2client.service_account import ServiceAccountCredentials
-from state import State
+from State import State
 
 GOOGLE_AUTH_FILENAME = r'pyScripts/GoogleAuth.json'
 
@@ -15,7 +15,6 @@ def assemble_absolute_path(file_name):
 
 def request_google_sheet_client(state):
     credentials_path = state.get("google_auth_path")
-
     service_scope = ['https://spreadsheets.google.com/feeds',
                      'https://www.googleapis.com/auth/drive']
 

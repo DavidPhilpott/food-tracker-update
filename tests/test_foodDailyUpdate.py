@@ -5,6 +5,7 @@ from foodDailyUpdate import request_google_sheet_client
 from foodDailyUpdate import open_google_worksheet
 from foodDailyUpdate import get_all_sheet_values
 from foodDailyUpdate import main
+from State import State
 
 from gspread import Worksheet
 
@@ -16,18 +17,18 @@ class TestAssembleAbsolutePath:
 
 
 class TestRequestGoogleSheetClient:
-    def test_proper_auth_client_returns(self, test_state, monkeypatch):
+    def test_proper_auth_client_returns(self, monkeypatch):
         credentials_path = "/home/david/projects/food-tracker-update/GoogleAuth.json"
         monkeypatch.setenv("google_auth_path", credentials_path)
-        client = request_google_sheet_client(test_state)
+        state = State()
+        client = request_google_sheet_client(state)
         assert str(type(client)) == "<class 'gspread.client.Client'>"
 
 
 class TestOpenGoogleWorksheet:
-    def test_able_to_open_sheet(self):
-        credentials_path = "/home/david/projects/food-tracker-update/GoogleAuth.json"
-        client = request_google_sheet_client(credentials_path)
-        test_key = '1rpHCHOHrdWr7LzL4lbc7xxXzuQ_UAIMl26MU2fbzyvU'
+    def test_able_to_open_sheet(self, test_state):
+        client = request_google_sheet_client(test_state)
+        test_key = '1VWbIiRyZEIVUkoZAGCxX18MTq1eV1tic91V_focnCvw'
         worksheet = open_google_worksheet(google_client=client, sheet_key=test_key)
         assert worksheet is not None
 
@@ -39,9 +40,10 @@ class TestMain:
     def test_update_commands_passed_as_expected(self,
                                                 mock_sleep,
                                                 mock_assemble_absolute_path,
-                                                mock_update_cell_value):
+                                                mock_update_cell_value,
+                                                monkeypatch):
         credentials_path = "/home/david/projects/food-tracker-update/GoogleAuth.json"
-        mock_assemble_absolute_path.side_effect = [credentials_path]
+        monkeypatch.setenv("google_auth_path", "/home/david/projects/food-tracker-update/GoogleAuth.json")
         main()
         assert True
 
