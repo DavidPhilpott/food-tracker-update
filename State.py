@@ -1,12 +1,16 @@
 import logging
 import os
+from EnvVarProvider import EnvVarProvider
 
 
 class State:
-    def __init__(self):
+    def __init__(self, env_var_provider=None):
         self._logger = logging.getLogger(__name__)
         self._logger.setLevel('DEBUG')
         self._state = {}
+        self._env_var_provider = env_var_provider
+        if env_var_provider is None:
+            self._env_var_provider = EnvVarProvider()
 
     def get(self, key: str) -> str:
         if not isinstance(key, str):
@@ -17,7 +21,7 @@ class State:
         else:
             self.info(f'{key} not found in local state. Searching OS Env.')
             try:
-                return os.environ[key]
+                return self._env_var_provider.get_var(key)
             except KeyError as exc_info:
                 raise
 
