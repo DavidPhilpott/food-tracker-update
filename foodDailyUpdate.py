@@ -1,18 +1,7 @@
-import os
 import time
-import gspread
-import logging
-from oauth2client.service_account import ServiceAccountCredentials
 from State import State
 from GoogleSheetConnection import GoogleSheetConnection
 from GoogleWorksheetSession import GoogleWorksheetSession
-
-GOOGLE_AUTH_FILENAME = r'pyScripts/GoogleAuth.json'
-
-
-def open_google_worksheet(google_client, sheet_key):
-    worksheet = google_client.open_by_key(sheet_key)
-    return worksheet
 
 
 def get_all_sheet_values(google_sheet):
