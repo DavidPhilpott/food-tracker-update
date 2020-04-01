@@ -4,24 +4,24 @@ from GoogleSheetConnection import GoogleSheetConnection
 from GoogleWorksheetSession import GoogleWorksheetSession
 
 
-def update_cell_value(state, spreadsheet_name, worksheet_name, cell_index, value):
+def update_cell_value(state, spreadsheet_name: str, worksheet_name: str, cell_index: str, value: str) -> None:
     worksheet = state.get(f"worksheet_{spreadsheet_name}{worksheet_name}")
     worksheet.update_cell_value(cell_index, value)
     return
 
 
-def open_google_worksheet(state, spreadsheet_name: str, worksheet_name: str):
+def open_google_worksheet(state, spreadsheet_name: str, worksheet_name: str) -> None:
     worksheet = GoogleWorksheetSession(state, GoogleSheetConnection(state), spreadsheet_name, worksheet_name)
     state.set({f"worksheet_{spreadsheet_name}{worksheet_name}": worksheet})
     return
 
 
-def get_sheet_cell_value(state, spreadsheet_name, worksheet_name, index):
+def get_sheet_cell_value(state, spreadsheet_name: str, worksheet_name: str, index: str) -> str:
     worksheet = state.get(f"worksheet_{spreadsheet_name}{worksheet_name}")
     return worksheet.get_cell_value(index)
 
 
-def get_all_sheet_values(state, spreadsheet_name, worksheet_name):
+def get_all_sheet_values(state, spreadsheet_name: str, worksheet_name: str) -> list:
     worksheet = state.get(f"worksheet_{spreadsheet_name}{worksheet_name}")
     return worksheet.get_all_sheet_values()
 
