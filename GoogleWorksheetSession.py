@@ -13,8 +13,13 @@ class GoogleWorksheetSession:
         self.worksheet = spreadsheet.worksheet(self.__session_details["worksheet_name"])
         return
 
-    def get_cell_value(self, cell_index):
+    def get_cell_value(self, cell_index: str):
         return self.worksheet.acell(cell_index).value
 
     def get_all_sheet_values(self):
         return self.worksheet.get_all_values()
+
+    def update_cell_value(self, cell_index: str, cell_value):
+        self.worksheet.update_acell(cell_index, cell_value)
+        return
+

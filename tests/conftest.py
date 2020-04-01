@@ -21,5 +21,15 @@ def google_sheet_connection(test_state):
 def test_worksheet_session(test_state, google_sheet_connection):
     spreadsheet_name = 'IntegrationTest'
     worksheet_name = "Sheet1"
-    test_worksheet_session = GoogleWorksheetSession(test_state, google_sheet_connection, spreadsheet_name, worksheet_name)
+    test_worksheet_session = GoogleWorksheetSession(test_state, google_sheet_connection,
+                                                    spreadsheet_name, worksheet_name)
     return test_worksheet_session
+
+
+@pytest.fixture
+def test_worksheet_write_session(test_state, google_sheet_connection):
+    spreadsheet_name = 'IntegrationTest'
+    worksheet_name = "PutTest"
+    test_worksheet_write_session = GoogleWorksheetSession(test_state, google_sheet_connection,
+                                                          spreadsheet_name, worksheet_name)
+    return test_worksheet_write_session

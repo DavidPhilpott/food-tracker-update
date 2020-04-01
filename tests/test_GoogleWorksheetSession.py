@@ -24,3 +24,13 @@ class TestGetAllSheetValues:
                            ["2", "5", "8", "Test Value 2"],
                            ["3", "6", "9", "Test Value 3"]]
         assert values == expected_output
+
+
+class TestUpdateCellValue:
+    def test_successfully_update_value(self, test_worksheet_write_session):
+        test_worksheet_write_session.update_cell_value("A1", "")
+        assert test_worksheet_write_session.get_cell_value("A1") == ""
+        test_worksheet_write_session.update_cell_value("A1", "Test Data")
+        assert test_worksheet_write_session.get_cell_value("A1") == "Test Data"
+        test_worksheet_write_session.update_cell_value("A1", "")
+        assert test_worksheet_write_session.get_cell_value("A1") == ""
