@@ -4,24 +4,9 @@ import gspread
 import logging
 from oauth2client.service_account import ServiceAccountCredentials
 from State import State
-from GoogleSheetSession import GoogleSheetSession
+from GoogleSheetConnection import GoogleSheetConnection
 
 GOOGLE_AUTH_FILENAME = r'pyScripts/GoogleAuth.json'
-
-
-def assemble_absolute_path(file_name):
-    absolute_path = os.path.join(os.path.expanduser('~'), file_name)
-    return absolute_path
-
-
-def request_google_sheet_client(state):
-    credentials_path = state.get("google_auth_path")
-    service_scope = ['https://spreadsheets.google.com/feeds',
-                     'https://www.googleapis.com/auth/drive']
-
-    credentials = ServiceAccountCredentials.from_json_keyfile_name(credentials_path, service_scope)
-    sheets_client = gspread.authorize(credentials)
-    return sheets_client
 
 
 def open_google_worksheet(google_client, sheet_key):
@@ -48,7 +33,7 @@ def main(state=None):
     if state is None:
         state = State()
     state.info("Requesting client from google using auth")
-    sheets = GoogleSheetSession(state).connection
+    sheets = GoogleSheetConnection(state).connection
     state.info("Opening food daily and core worksheets")
     food_daily = open_google_worksheet(google_client=sheets, sheet_key='1rpHCHOHrdWr7LzL4lbc7xxXzuQ_UAIMl26MU2fbzyvU')
     food_core = open_google_worksheet(google_client=sheets, sheet_key='1QDq6rDSosVcLE-TekFcxGDLqvbn_leVa5vUo8uJMTSI')

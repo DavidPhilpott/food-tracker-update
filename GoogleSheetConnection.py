@@ -1,9 +1,8 @@
-import json
 from oauth2client.service_account import ServiceAccountCredentials
 import gspread
 
 
-class GoogleSheetSession:
+class GoogleSheetConnection:
     def __init__(self, state):
         self.__authentication_details = {
             "type": state.get("google_auth_type"),
@@ -18,10 +17,10 @@ class GoogleSheetSession:
             "client_x509_cert_url": state.get("google_auth_client_x509_cert_url")
         }
         self.connection = None
-        self.__open_session()
+        self.__open_connection()
         return
 
-    def __open_session(self):
+    def __open_connection(self):
         service_scope = ['https://spreadsheets.google.com/feeds',
                          'https://www.googleapis.com/auth/drive']
         credentials = ServiceAccountCredentials.from_json_keyfile_dict(self.__authentication_details, service_scope)

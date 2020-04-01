@@ -2,7 +2,7 @@ from EnvVarProvider import EnvVarProvider
 import pytest
 
 
-class TestVariablesProvider:
+class TestGetVar:
     def test_get_variable_from_env(self, monkeypatch):
         monkeypatch.setenv("test variable", "test value")
         provider = EnvVarProvider()
