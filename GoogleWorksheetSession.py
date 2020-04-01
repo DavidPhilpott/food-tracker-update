@@ -12,3 +12,6 @@ class GoogleWorksheetSession:
         spreadsheet = self.connection.connection.open_by_key(self.__session_details["spreadsheet_key"])
         self.worksheet = spreadsheet.worksheet(self.__session_details["worksheet_name"])
         return
+
+    def get_cell_value(self, cell_index):
+        return self.worksheet.acell(cell_index).value
