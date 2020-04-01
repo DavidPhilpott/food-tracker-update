@@ -15,3 +15,6 @@ class GoogleWorksheetSession:
 
     def get_cell_value(self, cell_index):
         return self.worksheet.acell(cell_index).value
+
+    def get_all_sheet_values(self):
+        return self.worksheet.get_all_values()
