@@ -9,5 +9,7 @@ mock_variables = {
   "google_auth_token_uri": "https://oauth2.googleapis.com/token",
   "google_auth_auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
   "google_auth_client_x509_cert_url": "",
-  "google_auth_path": "/home/david/projects/food-tracker-update/GoogleAuth.json"
+  "spreadsheet_key_IntegrationTest": "1VWbIiRyZEIVUkoZAGCxX18MTq1eV1tic91V_focnCvw",
+  "spreadsheet_key_FoodDaily": "1rpHCHOHrdWr7LzL4lbc7xxXzuQ_UAIMl26MU2fbzyvU",
+  "spreadsheet_key_FoodCore": "1QDq6rDSosVcLE-TekFcxGDLqvbn_leVa5vUo8uJMTSI",
 }
