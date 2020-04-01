@@ -22,4 +22,3 @@ class GoogleWorksheetSession:
     def update_cell_value(self, cell_index: str, cell_value):
         self.worksheet.update_acell(cell_index, cell_value)
         return
-

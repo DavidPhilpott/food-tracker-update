@@ -5,7 +5,7 @@ from GoogleWorksheetSession import GoogleWorksheetSession
 
 
 def update_cell_value(google_sheet, cell_index, value):
-    google_sheet.update_acell(cell_index, value)
+    google_sheet.update_cell_value(cell_index, value)
     return
 
 
