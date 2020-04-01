@@ -4,16 +4,6 @@ from GoogleSheetConnection import GoogleSheetConnection
 from GoogleWorksheetSession import GoogleWorksheetSession
 
 
-def get_all_sheet_values(google_sheet):
-    df_result = google_sheet.get_all_values()
-    return df_result
-
-
-def get_cell_value(google_sheet, cell_index):
-    cell_value = google_sheet.acell(cell_index).value
-    return cell_value
-
-
 def update_cell_value(google_sheet, cell_index, value):
     google_sheet.update_acell(cell_index, value)
     return
