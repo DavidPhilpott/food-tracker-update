@@ -27,22 +27,20 @@ def main(state=None):
     gsheet_connection = GoogleSheetConnection(state)
 
     state.info("Opening food daily and core worksheets")
-    food_daily_info = GoogleWorksheetSession(state, gsheet_connection, "FoodDaily", "Info").worksheet
-    food_daily_auto = GoogleWorksheetSession(state, gsheet_connection, "FoodDaily", "Auto").worksheet
-    food_daily_manual = GoogleWorksheetSession(state, gsheet_connection, "FoodDaily", "Manual").worksheet
-    food_core_history = GoogleWorksheetSession(state, gsheet_connection, "FoodCore", "Historical Food Tracker").worksheet
+    food_daily_info = GoogleWorksheetSession(state, gsheet_connection, "FoodDaily", "Info")
+    food_daily_auto = GoogleWorksheetSession(state, gsheet_connection, "FoodDaily", "Auto")
+    food_daily_manual = GoogleWorksheetSession(state, gsheet_connection, "FoodDaily", "Manual")
+    food_core_history = GoogleWorksheetSession(state, gsheet_connection, "FoodCore", "Historical Food Tracker")
 
     state.info("Taking current date")
-    current_date = get_cell_value(google_sheet=food_daily_info, cell_index='C2')
+    current_date = food_daily_info.get_cell_value('C2')
 
     state.info("Reading 'Auto' sheet")
-    df_auto_daily = get_all_sheet_values(food_daily_auto)
-
+    df_auto_daily = food_daily_auto.get_all_sheet_values()
     state.info("Reading 'Manual' sheet")
-    df_manual_daily = get_all_sheet_values(food_daily_manual)
-
+    df_manual_daily = food_daily_manual.get_all_sheet_values()
     state.info("Reading 'Historical Tracker' sheet")
-    df_food_history = get_all_sheet_values(food_core_history)
+    df_food_history = food_core_history.get_all_sheet_values()
 
     state.info("Initialising transfer lists")
     transfer_date = []
