@@ -1,13 +1,14 @@
 class GoogleWorksheetSession:
-    def __init__(self, state, connection, worksheet_name):
+    def __init__(self, state, connection, spreadsheet_name, worksheet_name):
         self.__session_details = {
-            "worksheet_key": state.get(f"worksheet_key_{worksheet_name}")
+            "spreadsheet_key": state.get(f"spreadsheet_key_{spreadsheet_name}"),
+            "worksheet_name": worksheet_name
         }
         self.connection = connection
         self.__open_worksheet()
         return
 
     def __open_worksheet(self):
-        worksheet = self.connection.connection.open_by_key(self.__session_details["worksheet_key"])
-        self.worksheet = worksheet
+        spreadsheet = self.connection.connection.open_by_key(self.__session_details["spreadsheet_key"])
+        self.worksheet = spreadsheet.worksheet(self.__session_details["worksheet_name"])
         return

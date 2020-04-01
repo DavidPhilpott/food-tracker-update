@@ -5,6 +5,7 @@ import logging
 from oauth2client.service_account import ServiceAccountCredentials
 from State import State
 from GoogleSheetConnection import GoogleSheetConnection
+from GoogleWorksheetSession import GoogleWorksheetSession
 
 GOOGLE_AUTH_FILENAME = r'pyScripts/GoogleAuth.json'
 
@@ -32,17 +33,15 @@ def update_cell_value(google_sheet, cell_index, value):
 def main(state=None):
     if state is None:
         state = State()
-    state.info("Requesting client from google using auth")
-    sheets = GoogleSheetConnection(state).connection
-    state.info("Opening food daily and core worksheets")
-    food_daily = open_google_worksheet(google_client=sheets, sheet_key='1rpHCHOHrdWr7LzL4lbc7xxXzuQ_UAIMl26MU2fbzyvU')
-    food_core = open_google_worksheet(google_client=sheets, sheet_key='1QDq6rDSosVcLE-TekFcxGDLqvbn_leVa5vUo8uJMTSI')
 
-    state.info("Opening specific sheets")
-    food_daily_info = food_daily.worksheet('Info')
-    food_daily_auto = food_daily.worksheet('Auto')
-    food_daily_manual = food_daily.worksheet('Manual')
-    food_history = food_core.worksheet('Historical Food Tracker')
+    state.info("Requesting client from google using auth")
+    gsheet_connection = GoogleSheetConnection(state)
+
+    state.info("Opening food daily and core worksheets")
+    food_daily_info = GoogleWorksheetSession(state, gsheet_connection, "FoodDaily", "Info").worksheet
+    food_daily_auto = GoogleWorksheetSession(state, gsheet_connection, "FoodDaily", "Auto").worksheet
+    food_daily_manual = GoogleWorksheetSession(state, gsheet_connection, "FoodDaily", "Manual").worksheet
+    food_core_history = GoogleWorksheetSession(state, gsheet_connection, "FoodCore", "Historical Food Tracker").worksheet
 
     state.info("Taking current date")
     current_date = get_cell_value(google_sheet=food_daily_info, cell_index='C2')
@@ -54,7 +53,7 @@ def main(state=None):
     df_manual_daily = get_all_sheet_values(food_daily_manual)
 
     state.info("Reading 'Historical Tracker' sheet")
-    df_food_history = get_all_sheet_values(food_history)
+    df_food_history = get_all_sheet_values(food_core_history)
 
     state.info("Initialising transfer lists")
     transfer_date = []
@@ -89,12 +88,12 @@ def main(state=None):
         state.info("transferring lists to historical tracker")
         for i in range(0, len(transfer_date)):
             row = str(start_row + i)
-            update_cell_value(google_sheet=food_history, cell_index='A%s' % row, value=transfer_date[i])
-            update_cell_value(google_sheet=food_history, cell_index='B%s' % row, value=transfer_item[i])
-            update_cell_value(google_sheet=food_history, cell_index='C%s' % row, value=transfer_quantity[i])
-            update_cell_value(google_sheet=food_history, cell_index='D%s' % row, value=transfer_calorie[i])
-            update_cell_value(google_sheet=food_history, cell_index='E%s' % row, value=transfer_protein[i])
-            update_cell_value(google_sheet=food_history, cell_index='F%s' % row, value=transfer_veg[i])
+            update_cell_value(google_sheet=food_core_history, cell_index='A%s' % row, value=transfer_date[i])
+            update_cell_value(google_sheet=food_core_history, cell_index='B%s' % row, value=transfer_item[i])
+            update_cell_value(google_sheet=food_core_history, cell_index='C%s' % row, value=transfer_quantity[i])
+            update_cell_value(google_sheet=food_core_history, cell_index='D%s' % row, value=transfer_calorie[i])
+            update_cell_value(google_sheet=food_core_history, cell_index='E%s' % row, value=transfer_protein[i])
+            update_cell_value(google_sheet=food_core_history, cell_index='F%s' % row, value=transfer_veg[i])
         state.info("finished transferring items")
 
     else:
