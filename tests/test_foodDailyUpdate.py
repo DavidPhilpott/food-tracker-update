@@ -6,7 +6,12 @@ from foodDailyUpdate import get_sheet_cell_value
 from foodDailyUpdate import get_all_sheet_values
 from foodDailyUpdate import update_cell_value
 from foodDailyUpdate import get_current_date
-from foodDailyUpdate import assemble_auto_manual_food_items
+from foodDailyUpdate import get_manual_sheet_values
+from foodDailyUpdate import get_auto_sheet_values
+from foodDailyUpdate import assemble_daily_food_transfer_data
+from foodDailyUpdate import get_historical_sheet_values
+from foodDailyUpdate import transfer_daily_data_to_historical_sheet
+from foodDailyUpdate import clean_up_auto_sheet
 
 
 class TestMain:
@@ -60,18 +65,103 @@ class TestUpdateCellValue:
 
 class TestGetCurrentDate:
     def test_value_placed_on_state_correctly(self, test_state):
-        test_state.set({"date_index": "E2"})
-        test_state.set({"date_worksheet": "Sheet1"})
-        test_state.set({"date_spreadsheet": "IntegrationTest"})
-        open_google_worksheet(test_state, "IntegrationTest", "Sheet1")
+        open_google_worksheet(test_state, "IntegrationTest", "TestInfo")
         get_current_date(test_state)
         assert test_state.get("date_value") == "01-Jan-2000"
 
 
-class TestAssembleAutoManualFoodItems:
+class TestAssembleDailyFoodTransferData:
     def test_items_assembled_correctly(self, test_state):
-        open_google_worksheet(test_state, "FoodDaily", "Auto")
-        open_google_worksheet(test_state, "FoodDaily", "Manual")
-        get_all_sheet_values(test_state, "FoodDaily", "Auto")
-        get_all_sheet_values(test_state, "FoodDaily", "Manual")
+        test_state.set({"date_value": "01-Jan-2000"})
+        test_state.set({"worksheet_IntegrationTestTestAuto_values":
+                        [["Item", "No.", "Size", "C", "P", "V"], ["Auto 1", "1", "Auto 1", "Auto 1", "Auto 1", "Auto 1"]]})
+        test_state.set({"worksheet_IntegrationTestTestManual_values":
+                        [["Item", "No.", "C", "P", "V", "C", "P", "V"], ["Manual 1", "1", "1", "2", "3", "1", "2", "3"]]})
+        assemble_daily_food_transfer_data(test_state)
+        expected_values = [['Date', 'Item', 'Number', 'Cal', 'Prot', 'Veg'],
+                           ["01-Jan-2000", "Auto 1", "1", "Auto 1", "Auto 1", "Auto 1"],
+                           ["01-Jan-2000", "Manual 1", "1", "1", "2", "3"]]
+        assert test_state.get("food_daily_transfer_data") == expected_values
+
+
+class TestGetManualSheetValues:
+    def test_values_retrieved_correctly(self, test_state):
+        open_google_worksheet(test_state, "IntegrationTest", "TestManual")
+        get_manual_sheet_values(test_state)
+        expected_values = [["Item", "No.", "C", "P", "V", "C", "P", "V"],
+                           ["Manual 1", "1", "1", "2", "3", "1", "2", "3"]]
+        assert test_state.get("worksheet_IntegrationTestTestManual_values") == expected_values
+
+
+class TestGetAutoSheetValues:
+    def test_values_retrieved_correctly(self, test_state):
+        open_google_worksheet(test_state, "IntegrationTest", "TestAuto")
+        update_cell_value(test_state, "IntegrationTest", "TestAuto", "A1", "Item")
+        update_cell_value(test_state, "IntegrationTest", "TestAuto", "B1", "No.")
+        update_cell_value(test_state, "IntegrationTest", "TestAuto", "C1", "Size")
+        update_cell_value(test_state, "IntegrationTest", "TestAuto", "D1", "C")
+        update_cell_value(test_state, "IntegrationTest", "TestAuto", "E1", "P")
+        update_cell_value(test_state, "IntegrationTest", "TestAuto", "F1", "V")
+        update_cell_value(test_state, "IntegrationTest", "TestAuto", "A2", "Auto 1")
+        update_cell_value(test_state, "IntegrationTest", "TestAuto", "B2", "1")
+        get_auto_sheet_values(test_state)
+        expected_values = [["Item", "No.", "Size", "C", "P", "V"],
+                           ["Auto 1", "1", "Auto 1", "Auto 1", "Auto 1", "Auto 1"]]
+        assert test_state.get("worksheet_IntegrationTestTestAuto_values") == expected_values
+
+
+class TestGetHistoricalSheetValues:
+    def test_values_retrieved_correctly(self, test_state):
+        open_google_worksheet(test_state, "IntegrationTest", "TestHistorical")
+        get_historical_sheet_values(test_state)
+        expected_values = [["Date", "Item", "Number", "Cal", "Prot", "Veg", "Size Details", "Cal", "Prot", "Veg", "Final Cal", "Final Prot", "Final Veg"]]
+        assert test_state.get("worksheet_IntegrationTestTestHistorical_values") == expected_values
+
+
+class TestTransferDailyDataToHistoricalSheet:
+    def test_values_transfer_correctly(self, test_state):
+        test_state.set({"food_daily_transfer_data": [['Date', 'Item', 'Number', 'Cal', 'Prot', 'Veg'],
+                                                     ["01-Jan-2000", "Auto 1", "1", "Auto 1", "Auto 1", "Auto 1"],
+                                                     ["01-Jan-2000", "Manual 1", "1", "1", "2", "3"]]})
+        expected_values = [["Date", "Item", "Number", "Cal", "Prot", "Veg", "Size Details", "Cal", "Prot", "Veg", "Final Cal", "Final Prot", "Final Veg"],
+                           ["01-Jan-2000", "Auto 1", "1", "Auto 1", "Auto 1", "Auto 1", "", "", "", "", "", "", ""],
+                           ["01-Jan-2000", "Manual 1", "1", "1", "2", "3", "", "", "", "", "", "", ""]]
+        base_values = [["Date", "Item", "Number", "Cal", "Prot", "Veg", "Size Details", "Cal", "Prot", "Veg", "Final Cal", "Final Prot", "Final Veg"]]
+        open_google_worksheet(test_state, "IntegrationTest", "TestHistorical")
+        get_all_sheet_values(test_state, "IntegrationTest", "TestHistorical")
+        transfer_daily_data_to_historical_sheet(test_state)
+        get_all_sheet_values(test_state, "IntegrationTest", "TestHistorical")
+        assert test_state.get("worksheet_IntegrationTestTestHistorical_values") == expected_values
+        update_cell_value(test_state, "IntegrationTest", "TestHistorical", "A2", "")
+        update_cell_value(test_state, "IntegrationTest", "TestHistorical", "B2", "")
+        update_cell_value(test_state, "IntegrationTest", "TestHistorical", "C2", "")
+        update_cell_value(test_state, "IntegrationTest", "TestHistorical", "D2", "")
+        update_cell_value(test_state, "IntegrationTest", "TestHistorical", "E2", "")
+        update_cell_value(test_state, "IntegrationTest", "TestHistorical", "F2", "")
+        update_cell_value(test_state, "IntegrationTest", "TestHistorical", "A3", "")
+        update_cell_value(test_state, "IntegrationTest", "TestHistorical", "B3", "")
+        update_cell_value(test_state, "IntegrationTest", "TestHistorical", "C3", "")
+        update_cell_value(test_state, "IntegrationTest", "TestHistorical", "D3", "")
+        update_cell_value(test_state, "IntegrationTest", "TestHistorical", "E3", "")
+        update_cell_value(test_state, "IntegrationTest", "TestHistorical", "F3", "")
+        get_all_sheet_values(test_state, "IntegrationTest", "TestHistorical")
+        assert test_state.get("worksheet_IntegrationTestTestHistorical_values") == base_values
+
+
+class TestCleanUpAutoSheet:
+    def test_sheet_cleaned_correctly(self, test_state):
+        open_google_worksheet(test_state, "IntegrationTest", "TestAuto")
+        update_cell_value(test_state, "IntegrationTest", "TestAuto", "A1", "Item")
+        update_cell_value(test_state, "IntegrationTest", "TestAuto", "B1", "No.")
+        update_cell_value(test_state, "IntegrationTest", "TestAuto", "C1", "Size")
+        update_cell_value(test_state, "IntegrationTest", "TestAuto", "D1", "C")
+        update_cell_value(test_state, "IntegrationTest", "TestAuto", "E1", "P")
+        update_cell_value(test_state, "IntegrationTest", "TestAuto", "F1", "V")
+        update_cell_value(test_state, "IntegrationTest", "TestAuto", "A2", "Auto 1")
+        update_cell_value(test_state, "IntegrationTest", "TestAuto", "B2", "1")
+        expected_values = [["Item", "No.", "Size", "C", "P", "V"]]
+        get_all_sheet_values(test_state, "IntegrationTest", "TestAuto")
+        clean_up_auto_sheet(test_state)
+        get_all_sheet_values(test_state, "IntegrationTest", "TestAuto")
+        assert test_state.get("worksheet_IntegrationTestTestAuto_values") == expected_values
 
