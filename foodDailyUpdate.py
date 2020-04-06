@@ -21,9 +21,20 @@ def get_sheet_cell_value(state, spreadsheet_name: str, worksheet_name: str, inde
     return worksheet.get_cell_value(index)
 
 
-def get_all_sheet_values(state, spreadsheet_name: str, worksheet_name: str) -> list:
+def get_all_sheet_values(state, spreadsheet_name: str, worksheet_name: str):
     worksheet = state.get(f"worksheet_{spreadsheet_name}{worksheet_name}")
-    return worksheet.get_all_sheet_values()
+    worksheet_values = worksheet.get_all_sheet_values()
+    state.set({f"worksheet_{spreadsheet_name}{worksheet_name}_values": worksheet_values})
+    return
+
+
+def get_current_date(state) -> None:
+    date_index = state.get("date_index")
+    spreadsheet_name = state.get("date_spreadsheet")
+    worksheet_name = state.get("date_worksheet")
+    date_value = get_sheet_cell_value(state, spreadsheet_name, worksheet_name, date_index)
+    state.set({"date_value": date_value})
+    return
 
 
 def main(state=None):
@@ -37,16 +48,20 @@ def main(state=None):
     open_google_worksheet(state, "FoodCore", "Historical Food Tracker")
 
     state.info("Taking current date")
-    current_date = get_sheet_cell_value(state, "FoodDaily", "Info", "C2")
+    get_current_date(state)
 
     state.info("Reading 'Auto' sheet")
-    food_daily_auto_values = get_all_sheet_values(state, "FoodDaily", "Auto")
+    get_all_sheet_values(state, "FoodDaily", "Auto")
     state.info("Reading 'Manual' sheet")
-    food_daily_manual_values = get_all_sheet_values(state, "FoodDaily", "Manual")
+    get_all_sheet_values(state, "FoodDaily", "Manual")
     state.info("Reading 'Historical Tracker' sheet")
-    food_history_values = get_all_sheet_values(state, "FoodCore", "Historical Food Tracker")
+    get_all_sheet_values(state, "FoodCore", "Historical Food Tracker")
 
     state.info("Initialising transfer lists")
+    current_date = state.get("date_value")
+    food_daily_auto_values = state.get("worksheet_FoodDailyAuto_values")
+    food_daily_manual_values = state.get("worksheet_FoodDailyManual_values")
+    food_history_values = state.get("worksheet_FoodCoreHistorical Food Tracker_values")
     transfer_date = []
     transfer_item = []
     transfer_quantity = []
