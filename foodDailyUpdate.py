@@ -118,9 +118,8 @@ def clean_up_manual_sheet(state) -> None:
     return
 
 
-def main(state=None):
-    if state is None:
-        state = State()
+def main():
+    state = State()
 
     state.info("Establishing spreadsheet and worksheet names")
     date_spreadsheet_name = state.get("date_spreadsheet")

@@ -13,18 +13,23 @@ from foodDailyUpdate import get_historical_sheet_values
 from foodDailyUpdate import transfer_daily_data_to_historical_sheet
 from foodDailyUpdate import clean_up_auto_sheet
 from foodDailyUpdate import clean_up_manual_sheet
+from tests.mock_interfaces.mock_EnvVarProvider import MockEnvVarProvider
+from State import State
 
 
 class TestMain:
     @mock.patch("foodDailyUpdate.update_cell_value")
     @mock.patch("time.sleep")
+    @mock.patch("foodDailyUpdate.State")
     def test_update_commands_passed_as_expected(self,
+                                                mock_state,
                                                 mock_sleep,
                                                 mock_update_cell_value,
                                                 monkeypatch,
                                                 test_state):
+        mock_state.return_value = State(env_var_provider=MockEnvVarProvider())
         monkeypatch.setenv("google_auth_path", "/home/david/projects/food-tracker-update/GoogleAuth.json")
-        main(test_state)
+        main()
         assert True
 
 
