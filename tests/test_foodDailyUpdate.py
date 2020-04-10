@@ -12,6 +12,7 @@ from foodDailyUpdate import assemble_daily_food_transfer_data
 from foodDailyUpdate import get_historical_sheet_values
 from foodDailyUpdate import transfer_daily_data_to_historical_sheet
 from foodDailyUpdate import clean_up_auto_sheet
+from foodDailyUpdate import clean_up_manual_sheet
 
 
 class TestMain:
@@ -87,9 +88,22 @@ class TestAssembleDailyFoodTransferData:
 class TestGetManualSheetValues:
     def test_values_retrieved_correctly(self, test_state):
         open_google_worksheet(test_state, "IntegrationTest", "TestManual")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "A1", "Item")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "B1", "No.")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "C1", "C")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "D1", "P")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "E1", "V")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "F1", "C")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "G1", "P")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "H1", "V")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "A2", "Manual")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "B2", "3")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "C2", "1")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "D2", "2")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "E2", "3")
         get_manual_sheet_values(test_state)
         expected_values = [["Item", "No.", "C", "P", "V", "C", "P", "V"],
-                           ["Manual 1", "1", "1", "2", "3", "1", "2", "3"]]
+                           ["Manual", "3", "1", "2", "3", "3", "6", "9"]]
         assert test_state.get("worksheet_IntegrationTestTestManual_values") == expected_values
 
 
@@ -165,3 +179,26 @@ class TestCleanUpAutoSheet:
         get_all_sheet_values(test_state, "IntegrationTest", "TestAuto")
         assert test_state.get("worksheet_IntegrationTestTestAuto_values") == expected_values
 
+
+
+class TestCleanUpManualSheet:
+    def test_sheet_cleaned_correctly(self, test_state):
+        open_google_worksheet(test_state, "IntegrationTest", "TestManual")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "A1", "Item")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "B1", "No.")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "C1", "C")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "D1", "P")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "E1", "V")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "F1", "C")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "G1", "P")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "H1", "V")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "A2", "Manual")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "B2", "1")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "B2", "1")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "B2", "2")
+        update_cell_value(test_state, "IntegrationTest", "TestManual", "B2", "3")
+        expected_values = [["Item", "No.", "C", "P", "V", "C", "P", "V"]]
+        get_all_sheet_values(test_state, "IntegrationTest", "TestManual")
+        clean_up_manual_sheet(test_state)
+        get_all_sheet_values(test_state, "IntegrationTest", "TestManual")
+        assert test_state.get("worksheet_IntegrationTestTestManual_values") == expected_values

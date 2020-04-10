@@ -104,6 +104,20 @@ def clean_up_auto_sheet(state) -> None:
     return
 
 
+def clean_up_manual_sheet(state) -> None:
+    manual_spreadsheet = state.get('daily_manual_spreadsheet_name')
+    manual_worksheet = state.get('daily_manual_worksheet_name')
+    manual_sheet_data = state.get(f"worksheet_{manual_spreadsheet}{manual_worksheet}_values")
+    if len(manual_sheet_data) > 1:
+        for i in range(1, len(manual_sheet_data)):
+            update_cell_value(state, manual_spreadsheet, manual_worksheet, f"A{i+1}", "")
+            update_cell_value(state, manual_spreadsheet, manual_worksheet, f"B{i+1}", "")
+            update_cell_value(state, manual_spreadsheet, manual_worksheet, f"C{i+1}", "")
+            update_cell_value(state, manual_spreadsheet, manual_worksheet, f"D{i+1}", "")
+            update_cell_value(state, manual_spreadsheet, manual_worksheet, f"E{i+1}", "")
+    return
+
+
 def main(state=None):
     if state is None:
         state = State()
@@ -147,23 +161,7 @@ def main(state=None):
     state.info("Blanking auto items")
     clean_up_auto_sheet(state)
 
-    food_daily_manual_values = state.get(f"worksheet_{daily_manual_spreadsheet_name}{daily_manual_worksheet_name}_values")
-    if len(food_daily_manual_values) > 2:
-        state.info("Sleeping for 101 seconds")
-        time.sleep(101)
-        state.info("Blanking manual items")
-        for i in range(1, len(food_daily_manual_values)):
-            row = str(i+1)
-            update_cell_value(state, "FoodDaily", "Manual", 'A%s' % row, "")
-            update_cell_value(state, "FoodDaily", "Manual", 'B%s' % row, "")
-            update_cell_value(state, "FoodDaily", "Manual", 'C%s' % row, "")
-            update_cell_value(state, "FoodDaily", "Manual", 'D%s' % row, "")
-            update_cell_value(state, "FoodDaily", "Manual", 'E%s' % row, "")
-        state.info("finished")
-    else:
-        state.info("no manual items to blank")
+    state.info("Blanking manual items")
+    clean_up_manual_sheet(state)
 
     state.info("Finished running script")
-    print("Done.")
-
-#main()
