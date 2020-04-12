@@ -4,6 +4,7 @@ from tests.mock_interfaces.mock_EnvVarProvider import MockEnvVarProvider
 from GoogleSheetConnection import GoogleSheetConnection
 from GoogleWorksheetSession import GoogleWorksheetSession
 from AwsSession import AwsSession
+from AwsParameterStoreProvider import AwsParameterStoreProvider
 
 
 @pytest.fixture
@@ -40,3 +41,18 @@ def test_worksheet_write_session(test_state, google_sheet_connection):
 def test_aws_session(test_state):
     test_session = AwsSession(test_state)
     return test_session
+
+
+@pytest.fixture
+def test_env_var_provider():
+    test_env_var_provider = MockEnvVarProvider()
+    return test_env_var_provider
+
+
+@pytest.fixture
+def test_aws_parameter_store_provider(test_env_var_provider, test_aws_session):
+    test_aws_parameter_store_provider = AwsParameterStoreProvider(env_var_provider=test_env_var_provider,
+                                                                  aws_session=test_aws_session)
+    return test_aws_parameter_store_provider
+
+
