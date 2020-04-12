@@ -1,4 +1,3 @@
 venv
 .idea
-mock_variables.py
 .pytest_cache
