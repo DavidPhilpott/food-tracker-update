@@ -1,7 +1,7 @@
 import logging
 import os
-from EnvVarProvider import EnvVarProvider
-from AwsParameterStoreProvider import AwsParameterStoreProvider
+from Providers.EnvVarProvider import EnvVarProvider
+from Providers.AwsParameterStoreProvider import AwsParameterStoreProvider
 
 
 class State:

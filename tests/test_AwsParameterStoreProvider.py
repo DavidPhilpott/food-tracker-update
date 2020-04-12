@@ -1,4 +1,4 @@
-from AwsParameterStoreProvider import AwsParameterStoreProvider
+from Providers.AwsParameterStoreProvider import AwsParameterStoreProvider
 from unittest import mock
 
 
