@@ -9,7 +9,8 @@ from AwsParameterStoreProvider import AwsParameterStoreProvider
 
 @pytest.fixture
 def test_state():
-    test_state = State(env_var_provider=MockEnvVarProvider())
+    test_state = State(env_var_provider=MockEnvVarProvider(),
+                       aws_parameter_store_provider=AwsParameterStoreProvider(MockEnvVarProvider()))
     return test_state
 
 

@@ -41,6 +41,16 @@ class TestStateGet:
             state.get(1)
         assert exc_info is not None, "State did not throw error when requesting with a non-string argument"
 
+    def test_get_string_from_parameter_store_if_prefixed_with_secret(self, test_state):
+        value = test_state.get("ssm_test_normal_string")
+        expected_value = 'Non Secure Test Value'
+        assert expected_value == value
+
+    def test_get_secure_string_from_parameter_store_if_prefixed_with_secret_secure(self, test_state):
+        value = test_state.get("ssm_secure_test_secure_string")
+        expected_value = 'Secure Test Value'
+        assert expected_value == value
+
 
 class TestStateSet:
     def test_set_variable_is_correct(self, test_env_var_provider):

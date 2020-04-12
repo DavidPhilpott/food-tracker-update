@@ -21,13 +21,21 @@ class State:
             raise TypeError(f"Variables must be requested as a string. Requested type is {type(key)}.")
         self.info(f"Getting state value for {key}")
         if key in self._state.keys():
-            return self._state[key]
+            key_value = self._state[key]
         else:
             self.info(f'{key} not found in local state. Searching OS Env.')
             try:
-                return self._env_var_provider.get_var(key)
+                key_value = self._env_var_provider.get_var(key)
             except KeyError as exc_info:
                 raise
+        if type(key_value) == str:
+            if key_value.startswith("secret_secure"):
+                self.info(f'{key} maps to {key_value}, so fetching from SSM as a secure string.')
+                key_value = self._aws_parameter_store_provider.get_secure_string(variable_name=key_value)
+            elif key_value.startswith("secret"):
+                self.info(f'{key} maps to {key_value}, so fetching from SSM as a regular string.')
+                key_value = self._aws_parameter_store_provider.get_non_secure_string(variable_name=key_value)
+        return key_value
 
     def set(self, key_pair: dict):
         if not isinstance(key_pair, dict):
