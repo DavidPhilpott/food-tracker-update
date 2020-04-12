@@ -1,4 +1,3 @@
 venv
 .idea
-GoogleAuth.json
 mock_variables.py

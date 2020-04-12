@@ -28,7 +28,6 @@ class TestMain:
                                                 monkeypatch,
                                                 test_state):
         mock_state.return_value = State(env_var_provider=MockEnvVarProvider())
-        monkeypatch.setenv("google_auth_path", "/home/david/projects/food-tracker-update/GoogleAuth.json")
         main()
         assert True
 
