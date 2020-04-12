@@ -3,6 +3,7 @@ from State import State
 from tests.mock_interfaces.mock_EnvVarProvider import MockEnvVarProvider
 from GoogleSheetConnection import GoogleSheetConnection
 from GoogleWorksheetSession import GoogleWorksheetSession
+from AwsSession import AwsSession
 
 
 @pytest.fixture
@@ -33,3 +34,9 @@ def test_worksheet_write_session(test_state, google_sheet_connection):
     test_worksheet_write_session = GoogleWorksheetSession(test_state, google_sheet_connection,
                                                           spreadsheet_name, worksheet_name)
     return test_worksheet_write_session
+
+
+@pytest.fixture
+def test_aws_session(test_state):
+    test_session = AwsSession(test_state)
+    return test_session
