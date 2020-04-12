@@ -32,6 +32,9 @@ class State:
             if key_value.startswith("secret_secure"):
                 self.info(f'{key} maps to {key_value}, so fetching from SSM as a secure string.')
                 key_value = self._aws_parameter_store_provider.get_secure_string(variable_name=key_value)
+            elif key_value.startswith("secret_pem"):
+                self.info(f'{key} maps to {key_value}, so fetching from SSM as a PEM key.')
+                key_value = self._aws_parameter_store_provider.get_secure_pem_key(variable_name=key_value)
             elif key_value.startswith("secret"):
                 self.info(f'{key} maps to {key_value}, so fetching from SSM as a regular string.')
                 key_value = self._aws_parameter_store_provider.get_non_secure_string(variable_name=key_value)

@@ -1,5 +1,5 @@
 import boto3
-
+import pem
 
 class AwsParameterStoreProvider:
     def __init__(self, env_var_provider, aws_session=None):
@@ -33,3 +33,8 @@ class AwsParameterStoreProvider:
             Name=variable_name,
             WithDecryption=True)
         return response['Parameter']['Value']
+
+    def get_secure_pem_key(self, variable_name):
+        pem_key = self.get_secure_string(variable_name)
+        pem_key = pem_key.replace("\\n", "\n")
+        return pem_key
