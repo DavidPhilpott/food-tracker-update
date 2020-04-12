@@ -1,4 +1,4 @@
-from Providers.EnvVarProvider import EnvVarProvider
+from app.Providers.EnvVarProvider import EnvVarProvider
 import pytest
 
 

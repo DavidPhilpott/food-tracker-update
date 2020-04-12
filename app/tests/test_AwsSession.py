@@ -1,4 +1,4 @@
-from Sessions.AwsSession import AwsSession
+from app.Sessions.AwsSession import AwsSession
 
 
 class TestSession:

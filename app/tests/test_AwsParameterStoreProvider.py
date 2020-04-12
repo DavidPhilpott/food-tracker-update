@@ -1,5 +1,4 @@
-from Providers.AwsParameterStoreProvider import AwsParameterStoreProvider
-from unittest import mock
+from app.Providers.AwsParameterStoreProvider import AwsParameterStoreProvider
 
 
 class TestInit:

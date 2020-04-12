@@ -1,26 +1,26 @@
 import mock
 
-from foodDailyUpdate import main
-from foodDailyUpdate import open_google_worksheet
-from foodDailyUpdate import get_sheet_cell_value
-from foodDailyUpdate import get_all_sheet_values
-from foodDailyUpdate import update_cell_value
-from foodDailyUpdate import get_current_date
-from foodDailyUpdate import get_manual_sheet_values
-from foodDailyUpdate import get_auto_sheet_values
-from foodDailyUpdate import assemble_daily_food_transfer_data
-from foodDailyUpdate import get_historical_sheet_values
-from foodDailyUpdate import transfer_daily_data_to_historical_sheet
-from foodDailyUpdate import clean_up_auto_sheet
-from foodDailyUpdate import clean_up_manual_sheet
-from tests.mock_interfaces.mock_EnvVarProvider import MockEnvVarProvider
-from State import State
+from app.foodDailyUpdate import main
+from app.foodDailyUpdate import open_google_worksheet
+from app.foodDailyUpdate import get_sheet_cell_value
+from app.foodDailyUpdate import get_all_sheet_values
+from app.foodDailyUpdate import update_cell_value
+from app.foodDailyUpdate import get_current_date
+from app.foodDailyUpdate import get_manual_sheet_values
+from app.foodDailyUpdate import get_auto_sheet_values
+from app.foodDailyUpdate import assemble_daily_food_transfer_data
+from app.foodDailyUpdate import get_historical_sheet_values
+from app.foodDailyUpdate import transfer_daily_data_to_historical_sheet
+from app.foodDailyUpdate import clean_up_auto_sheet
+from app.foodDailyUpdate import clean_up_manual_sheet
+from app.tests.mock_interfaces.mock_EnvVarProvider import MockEnvVarProvider
+from app.State import State
 
 
 class TestMain:
-    @mock.patch("foodDailyUpdate.update_cell_value")
+    @mock.patch("app.foodDailyUpdate.update_cell_value")
     @mock.patch("time.sleep")
-    @mock.patch("foodDailyUpdate.State")
+    @mock.patch("app.foodDailyUpdate.State")
     def test_update_commands_passed_as_expected(self,
                                                 mock_state,
                                                 mock_sleep,

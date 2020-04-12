@@ -1,4 +1,4 @@
-from Sessions.GoogleSheetConnection import GoogleSheetConnection
+from app.Sessions.GoogleSheetConnection import GoogleSheetConnection
 
 
 class TestSessionOpen:

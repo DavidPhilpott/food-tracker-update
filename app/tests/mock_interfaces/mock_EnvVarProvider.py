@@ -1,4 +1,4 @@
-from tests.mock_variables import mock_variables
+from app.tests.mock_variables import mock_variables
 
 
 class MockEnvVarProvider:

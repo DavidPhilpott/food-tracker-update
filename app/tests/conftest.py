@@ -1,10 +1,10 @@
 import pytest
-from State import State
-from tests.mock_interfaces.mock_EnvVarProvider import MockEnvVarProvider
-from Sessions.GoogleSheetConnection import GoogleSheetConnection
-from Sessions.GoogleWorksheetSession import GoogleWorksheetSession
-from Sessions.AwsSession import AwsSession
-from Providers.AwsParameterStoreProvider import AwsParameterStoreProvider
+from app.State import State
+from app.tests.mock_interfaces.mock_EnvVarProvider import MockEnvVarProvider
+from app.Sessions.GoogleSheetConnection import GoogleSheetConnection
+from app.Sessions.GoogleWorksheetSession import GoogleWorksheetSession
+from app.Sessions.AwsSession import AwsSession
+from app.Providers.AwsParameterStoreProvider import AwsParameterStoreProvider
 
 
 @pytest.fixture

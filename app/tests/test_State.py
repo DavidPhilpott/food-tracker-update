@@ -1,6 +1,6 @@
 import pytest
 
-from State import State
+from app.State import State
 
 
 class TestStateInit:

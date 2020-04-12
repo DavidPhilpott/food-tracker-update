@@ -1,7 +1,7 @@
 import time
-from State import State
-from Sessions.GoogleSheetConnection import GoogleSheetConnection
-from Sessions.GoogleWorksheetSession import GoogleWorksheetSession
+from app.State import State
+from app.Sessions.GoogleSheetConnection import GoogleSheetConnection
+from app.Sessions.GoogleWorksheetSession import GoogleWorksheetSession
 
 
 def update_cell_value(state, spreadsheet_name: str, worksheet_name: str, cell_index: str, value: str) -> None:

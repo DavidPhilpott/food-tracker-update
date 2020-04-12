@@ -1,4 +1,4 @@
-from Sessions.GoogleWorksheetSession import GoogleWorksheetSession
+from app.Sessions.GoogleWorksheetSession import GoogleWorksheetSession
 
 
 class TestOpenWorksheet:
