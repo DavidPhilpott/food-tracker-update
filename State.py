@@ -1,16 +1,20 @@
 import logging
 import os
 from EnvVarProvider import EnvVarProvider
+from AwsParameterStoreProvider import AwsParameterStoreProvider
 
 
 class State:
-    def __init__(self, env_var_provider=None):
+    def __init__(self, env_var_provider=None, aws_parameter_store_provider=None):
         self._logger = logging.getLogger(__name__)
         self._logger.setLevel('DEBUG')
         self._state = {}
         self._env_var_provider = env_var_provider
+        self._aws_parameter_store_provider = aws_parameter_store_provider
         if env_var_provider is None:
             self._env_var_provider = EnvVarProvider()
+        if aws_parameter_store_provider is None:
+            self._aws_parameter_store_provider = AwsParameterStoreProvider(self._env_var_provider)
 
     def get(self, key: str) -> str:
         if not isinstance(key, str):

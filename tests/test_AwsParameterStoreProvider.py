@@ -5,7 +5,7 @@ class TestInit:
 
     def test_provider_establishes_connection_correctly(self, test_env_var_provider, test_aws_session):
         provider = AwsParameterStoreProvider(test_env_var_provider, test_aws_session)
-        assert provider.client is not None
+        assert provider._client is not None
 
 
 class TestGetNonSecureString:
