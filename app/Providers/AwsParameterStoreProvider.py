@@ -1,5 +1,5 @@
 import boto3
-import pem
+
 
 class AwsParameterStoreProvider:
     def __init__(self, env_var_provider, aws_session=None):
