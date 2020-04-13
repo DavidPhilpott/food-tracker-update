@@ -164,3 +164,8 @@ def main():
     clean_up_manual_sheet(state)
 
     state.info("Finished running script")
+
+
+def lambda_handler(event, context):
+    main()
+    return

@@ -32,6 +32,15 @@ if pytest -vv ; then
     echo "Removing packaged build..."
     rm -rf $APP_NAME.zip
     echo "Running Terraform..."
+    cd terraform
+    terraform init --backend-config=environments/dev/backend.tfvars
+    terraform apply -auto-approve --var-file=environments/dev/variables.tfvars
+
+    echo "Updating Lambda..."
+    aws lambda update-function-code \
+    --function-name $APP_NAME-lambda  \
+    --s3-bucket $CODE_BUCKET \
+    --s3-key $APP_NAME/dev/$APP_NAME.zip --no-publish
 else
     echo "Test failed. Retaining build / package."
 fi
