@@ -71,6 +71,12 @@ def assemble_daily_food_transfer_data(state) -> None:
         transfer_data.append([current_date, auto_data[i][0], auto_data[i][1], auto_data[i][3], auto_data[i][4], auto_data[i][5]])
     for i in range(1, len(manual_data)):
         transfer_data.append([current_date, manual_data[i][0], manual_data[i][1], manual_data[i][2], manual_data[i][3], manual_data[i][4]])
+
+    for i in range(1, len(transfer_data)):
+        for j in range(transfer_data[0]):
+            if transfer_data[i][j] == '-':
+                transfer_data[i][j] == ''
+
     state.set({"food_daily_transfer_data": transfer_data})
     return
 
