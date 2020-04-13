@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "lambda" {
-  depends_on    = ["data.aws_iam_policy_document.lambda"]
+  depends_on    = [data.aws_iam_policy_document.lambda]
   s3_bucket     = var.s3_code_bucket
   s3_key        = var.s3_code_key
   function_name = var.lambda_name
@@ -46,6 +46,15 @@ data "aws_iam_policy_document" "lambda" {
       "arn:aws:logs:${var.region}:${var.aws_account_id}:*"
     ]
   }
+
+  statement {
+    actions = [
+      "ssm:*"
+    ]
+    resources = [
+      "arn:aws:ssm:${var.region}:${var.aws_account_id}:*"
+    ]
+  }
 }
 
 resource "aws_iam_role" "lambda" {
@@ -66,4 +75,8 @@ resource "aws_iam_role" "lambda" {
 }
 EOF
 
+}
+resource "aws_iam_role_policy" "lambda" {
+  role   = aws_iam_role.lambda.id
+  policy = data.aws_iam_policy_document.lambda.json
 }
