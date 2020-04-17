@@ -7,6 +7,7 @@ from app.Providers.LoggingProvider import LoggingProvider
 class State:
     def __init__(self, env_var_provider=None, aws_parameter_store_provider=None, logging_provider=None):
         self._state = {}
+        self._sessions = {}
 
         self._logging_provider = logging_provider
         if logging_provider is None:
@@ -20,6 +21,7 @@ class State:
         if aws_parameter_store_provider is None:
             self._aws_parameter_store_provider = AwsParameterStoreProvider(logging_provider=self._logging_provider,
                                                                            env_var_provider=self._env_var_provider)
+        return
 
     def get(self, key: str) -> str:
         if not isinstance(key, str):
@@ -53,15 +55,50 @@ class State:
             raise ValueError(f"Key-pair submitted must be length 1. Current key-pair dict is length {len(key_pair.keys())}.")
         self.debug(__name__, f"Setting state value for {list(key_pair.keys())[0]}...")
         self._state.update(key_pair)
+        return
+
+    def has_session(self, session_name: str) -> bool:
+        if not isinstance(session_name, str):
+            raise TypeError(f"Session name must be requested as a string. Requested type is {type(session_name)}.")
+        self.debug(__name__, f"Checking state for session {session_name}.")
+        if session_name in self._sessions:
+            self.debug(__name__, f"Session {session_name} found on state.")
+            return True
+        else:
+            self.debug(__name__, f"Session {session_name} not found on state.")
+            return False
+
+    def get_session(self, session_name: str):
+        if not isinstance(session_name, str):
+            raise TypeError(f"Session name must be requested as a string. Requested type is {type(session_name)}.")
+        self.debug(__name__, "Fetching {session_name} from state.")
+        if self.has_session(session_name):
+            return self._sessions[session_name]
+        else:
+            self.warning(__name__, f"Session {session_name} not found on state so cannot be retrieved.")
+            raise KeyError(f"{session_name} not found on state.")
+
+    def set_session(self, session_keypair: dict):
+        if not isinstance(session_keypair, dict):
+            raise TypeError(f"Session to be set must be given as a dict keypair. Requested type is {type(session_keypair)}.")
+        if len(session_keypair.keys()) != 1:
+            raise ValueError(f"Key-pair submitted must be length 1. Current key-pair dict is length {len(session_keypair.keys())}.")
+        self.debug(__name__, f"Setting session for {list(session_keypair.keys())}.")
+        self._sessions.update(session_keypair)
+        return
 
     def info(self, name, message):
         self._logging_provider.info(name, message)
+        return
 
     def warning(self, name, message):
         self._logging_provider.warning(name, message)
+        return
 
     def debug(self, name, message):
         self._logging_provider.debug(name, message)
+        return
 
     def error(self, name, message):
         self._logging_provider.error(name, message)
+        return

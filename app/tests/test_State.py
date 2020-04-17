@@ -101,3 +101,25 @@ class TestLogging:
             log_capture.check(
                 ("test_name", 'ERROR', 'test message')
             )
+
+
+class TestSessions:
+    def test_can_find_existing_session(self, test_state):
+        test_state._sessions.update({"Test Session": "Test Session Value"})
+        assert test_state.has_session("Test Session") is True
+
+    def test_cannot_find_non_existing_session(self, test_state):
+        assert test_state.has_session("Test Session") is False
+
+    def test_cannot_get_non_existing_session(self, test_state):
+        with pytest.raises(KeyError) as exc_info:
+            test_state.get_session("Test Session")
+            assert exc_info is not None
+
+    def test_can_get_existing_session(self, test_state):
+        test_state._sessions.update({"Test Session": "Test Session Value"})
+        assert test_state.get_session("Test Session") == "Test Session Value"
+
+    def test_can_set_session(self, test_state):
+        test_state.set_session({"Test Session": "Test Session Value"})
+        assert test_state._sessions == {"Test Session": "Test Session Value"}

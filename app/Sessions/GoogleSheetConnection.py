@@ -33,4 +33,3 @@ class GoogleSheetConnection:
         credentials = ServiceAccountCredentials.from_json_keyfile_dict(self.__authentication_details, service_scope)
         self.connection = gspread.authorize(credentials)
         pass
-
