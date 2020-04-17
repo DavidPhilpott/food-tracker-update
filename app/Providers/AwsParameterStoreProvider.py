@@ -40,5 +40,6 @@ class AwsParameterStoreProvider:
     def get_secure_pem_key(self, variable_name):
         self._logger.debug(__name__, f"Fetching {variable_name} from SSM as secure PEM key...")
         pem_key = self.get_secure_string(variable_name)
+        self._logger.debug(__name__, f"Formatting value as PEM...")
         pem_key = pem_key.replace("\\n", "\n")
         return pem_key
