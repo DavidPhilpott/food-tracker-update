@@ -5,6 +5,7 @@ from app.Sessions.GoogleSheetConnection import GoogleSheetConnection
 from app.Sessions.GoogleWorksheetSession import GoogleWorksheetSession
 from app.Sessions.AwsSession import AwsSession
 from app.Providers.AwsParameterStoreProvider import AwsParameterStoreProvider
+from app.Providers.LoggingProvider import LoggingProvider
 
 
 @pytest.fixture
@@ -57,3 +58,7 @@ def test_aws_parameter_store_provider(test_env_var_provider, test_aws_session):
     return test_aws_parameter_store_provider
 
 
+@pytest.fixture
+def test_logging_provider():
+    test_logging_provider = LoggingProvider()
+    return test_logging_provider
