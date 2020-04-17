@@ -1,17 +1,22 @@
 import logging
 from app.Providers.EnvVarProvider import EnvVarProvider
 from app.Providers.AwsParameterStoreProvider import AwsParameterStoreProvider
+from app.Providers.LoggingProvider import LoggingProvider
 
 
 class State:
-    def __init__(self, env_var_provider=None, aws_parameter_store_provider=None):
-        self._logger = logging.getLogger(__name__)
-        self._logger.setLevel('DEBUG')
+    def __init__(self, env_var_provider=None, aws_parameter_store_provider=None, logging_provider=None):
         self._state = {}
+
+        self._logging_provider = logging_provider
+        if logging_provider is None:
+            self._logging_provider = LoggingProvider()
+
         self._env_var_provider = env_var_provider
-        self._aws_parameter_store_provider = aws_parameter_store_provider
         if env_var_provider is None:
             self._env_var_provider = EnvVarProvider()
+
+        self._aws_parameter_store_provider = aws_parameter_store_provider
         if aws_parameter_store_provider is None:
             self._aws_parameter_store_provider = AwsParameterStoreProvider(self._env_var_provider)
 
@@ -47,5 +52,14 @@ class State:
         self.info(f"Setting state value for {list(key_pair.keys())[0]}")
         self._state.update(key_pair)
 
-    def info(self, message):
-        self._logger.info(message)
+    def info(self, name, message):
+        self._logging_provider.info(name, message)
+
+    def warning(self, name, message):
+        self._logging_provider.warning(name, message)
+
+    def debug(self, name, message):
+        self._logging_provider.debug(name, message)
+
+    def error(self, name, message):
+        self._logging_provider.error(name, message)

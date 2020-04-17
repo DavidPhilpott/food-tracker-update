@@ -1,12 +1,12 @@
 import pytest
-
 from app.State import State
+from testfixtures import LogCapture
 
 
 class TestStateInit:
     def test_state_inits_with_logger(self, test_env_var_provider):
         state = State(test_env_var_provider)
-        assert state._logger is not None, "State initialised without a logger"
+        assert state._logging_provider is not None, "State initialised without a logger"
 
 
 class TestStateGet:
@@ -73,17 +73,31 @@ class TestStateSet:
         assert exc_info is not None, "State did not throw error when trying to set a var without passing a dict"
 
 
-class TestStateInfo:
-    def test_message_logged_correctly(self, caplog, test_env_var_provider):
-        test_message = "This is an info log"
-        state = State(test_env_var_provider)
-        state.info(test_message)
-        assert len(caplog.messages) == 1, "Expected exactly one log present"
-        assert caplog.messages[0] == test_message, "Incorrect log written"
+class TestLogging:
+    def test_info_logs(self, test_state):
+        with LogCapture() as log_capture:
+            test_state.info("test_name", "test message")
+            log_capture.check(
+                ("test_name", 'INFO', 'test message')
+            )
 
-    def test_non_string_logged_correctly(self, caplog, test_env_var_provider):
-        test_object = State(test_env_var_provider)
-        state = State(test_env_var_provider)
-        state.info(test_object)
-        assert len(caplog.messages) == 1, "Expected exactly one log present"
-        assert caplog.messages[0] == str(test_object), "Incorrect log written"
+    def test_warning_logs(self, test_state):
+        with LogCapture() as log_capture:
+            test_state.warning("test_name", "test message")
+            log_capture.check(
+                ("test_name", 'WARNING', 'test message')
+            )
+
+    def test_debug_logs(self, test_state):
+        with LogCapture() as log_capture:
+            test_state.debug("test_name", "test message")
+            log_capture.check(
+                ("test_name", 'DEBUG', 'test message')
+            )
+
+    def test_error_logs(self, test_state):
+        with LogCapture() as log_capture:
+            test_state.error("test_name", "test message")
+            log_capture.check(
+                ("test_name", 'ERROR', 'test message')
+            )

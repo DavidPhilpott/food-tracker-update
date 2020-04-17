@@ -11,7 +11,8 @@ from app.Providers.LoggingProvider import LoggingProvider
 @pytest.fixture
 def test_state():
     test_state = State(env_var_provider=MockEnvVarProvider(),
-                       aws_parameter_store_provider=AwsParameterStoreProvider(MockEnvVarProvider()))
+                       aws_parameter_store_provider=AwsParameterStoreProvider(MockEnvVarProvider()),
+                       logging_provider=LoggingProvider())
     return test_state
 
 
