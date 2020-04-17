@@ -16,7 +16,7 @@ class AwsParameterStoreProvider:
         self._client_details = {
             "region_name": self._region_name,
         }
-        return boto3.session.Session()
+        return boto3.session.Session(**self._client_details)
 
     def _open_client(self):
         client = self._aws_session.client('ssm')
