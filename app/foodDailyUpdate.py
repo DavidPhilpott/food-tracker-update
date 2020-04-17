@@ -127,7 +127,7 @@ def clean_up_manual_sheet(state) -> None:
 def main():
     state = State()
 
-    state.info("Establishing spreadsheet and worksheet names")
+    state.info(__name__, "Establishing spreadsheet and worksheet names")
     date_spreadsheet_name = state.get("date_spreadsheet")
     date_worksheet_name = state.get("date_worksheet")
     daily_manual_spreadsheet_name = state.get("daily_manual_spreadsheet_name")
@@ -137,39 +137,39 @@ def main():
     core_spreadsheet_name = state.get("core_spreadsheet_name")
     core_worksheet_name = state.get("core_worksheet_name")
 
-    state.info("Opening food daily and core worksheets")
+    state.info(__name__, "Opening food daily and core worksheets")
     open_google_worksheet(state, date_spreadsheet_name, date_worksheet_name)
     open_google_worksheet(state, daily_manual_spreadsheet_name, daily_manual_worksheet_name)
     open_google_worksheet(state, daily_auto_spreadsheet_name, daily_auto_worksheet_name)
     open_google_worksheet(state, core_spreadsheet_name, core_worksheet_name)
 
-    state.info("Taking current date")
+    state.info(__name__, "Taking current date")
     get_current_date(state)
 
-    state.info("Reading 'Auto' sheet")
+    state.info(__name__, "Reading 'Auto' sheet")
     get_auto_sheet_values(state)
-    state.info("Reading 'Manual' sheet")
+    state.info(__name__, "Reading 'Manual' sheet")
     get_manual_sheet_values(state)
-    state.info("Reading 'Historical Tracker' sheet")
+    state.info(__name__, "Reading 'Historical Tracker' sheet")
     get_historical_sheet_values(state)
 
-    state.info("Initialising transfer lists")
+    state.info(__name__, "Initialising transfer lists")
     assemble_daily_food_transfer_data(state)
 
-    state.info("Sleeping for 101 seconds")
+    state.info(__name__, "Sleeping for 101 seconds")
     time.sleep(101)
-    state.info("transferring lists to historical tracker")
+    state.info(__name__, "transferring lists to historical tracker")
     transfer_daily_data_to_historical_sheet(state)
 
-    state.info("Sleeping for 101 seconds")
+    state.info(__name__, "Sleeping for 101 seconds")
     time.sleep(101)
-    state.info("Blanking auto items")
+    state.info(__name__, "Blanking auto items")
     clean_up_auto_sheet(state)
 
-    state.info("Blanking manual items")
+    state.info(__name__, "Blanking manual items")
     clean_up_manual_sheet(state)
 
-    state.info("Finished running script")
+    state.info(__name__, "Finished running script")
 
 
 def lambda_handler(event, context):
