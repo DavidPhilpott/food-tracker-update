@@ -6,7 +6,7 @@ class LoggingProvider:
     def __init__(self):
         self.loggers = {}
 
-        self.log_format = logging.Formatter(fmt='%(asctime)s | %(name)s | %(levelname)s | %(message)s',
+        self.log_format = logging.Formatter(fmt='%(asctime)s | %(levelname)s | %(name)s | %(message)s',
                                             datefmt='%d-%b-%y %H:%M:%S')
         if "LOG_FORMAT" in os.environ:
             self.log_format = logging.Formatter(fmt=os.environ["LOG_FORMAT"])
