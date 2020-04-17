@@ -26,8 +26,9 @@ class TestMain:
                                                 mock_sleep,
                                                 mock_update_cell_value,
                                                 monkeypatch,
-                                                test_state):
-        mock_state.return_value = State(env_var_provider=MockEnvVarProvider())
+                                                test_state,
+                                                test_env_var_provider):
+        mock_state.return_value = State(env_var_provider=test_env_var_provider)
         main()
         assert True
 

@@ -3,8 +3,12 @@ from app.Providers.AwsParameterStoreProvider import AwsParameterStoreProvider
 
 class TestInit:
 
-    def test_provider_establishes_connection_correctly(self, test_env_var_provider, test_aws_session):
-        provider = AwsParameterStoreProvider(test_env_var_provider, test_aws_session)
+    def test_provider_establishes_connection_correctly(self, test_logging_provider,
+                                                       test_env_var_provider,
+                                                       test_aws_session):
+        provider = AwsParameterStoreProvider(logging_provider=test_logging_provider,
+                                             env_var_provider=test_env_var_provider,
+                                             aws_session=test_aws_session)
         assert provider._client is not None
 
 

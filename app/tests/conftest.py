@@ -9,10 +9,31 @@ from app.Providers.LoggingProvider import LoggingProvider
 
 
 @pytest.fixture
-def test_state():
-    test_state = State(env_var_provider=MockEnvVarProvider(),
-                       aws_parameter_store_provider=AwsParameterStoreProvider(MockEnvVarProvider()),
-                       logging_provider=LoggingProvider())
+def test_logging_provider():
+    test_logging_provider = LoggingProvider()
+    return test_logging_provider
+
+
+@pytest.fixture
+def test_env_var_provider(test_logging_provider):
+    test_env_var_provider = MockEnvVarProvider(logging_provider=test_logging_provider)
+    return test_env_var_provider
+
+
+@pytest.fixture
+def test_aws_parameter_store_provider(test_env_var_provider, test_logging_provider, test_aws_session):
+    test_aws_parameter_store_provider = AwsParameterStoreProvider(logging_provider=test_logging_provider,
+                                                                  env_var_provider=test_env_var_provider,
+                                                                  aws_session=test_aws_session)
+    return test_aws_parameter_store_provider
+
+
+@pytest.fixture
+def test_state(test_logging_provider, test_env_var_provider):
+    test_state = State(env_var_provider=test_env_var_provider,
+                       aws_parameter_store_provider=AwsParameterStoreProvider(logging_provider=test_logging_provider,
+                                                                              env_var_provider=test_env_var_provider),
+                       logging_provider=test_logging_provider)
     return test_state
 
 
@@ -44,22 +65,3 @@ def test_worksheet_write_session(test_state, google_sheet_connection):
 def test_aws_session(test_state):
     test_session = AwsSession(test_state)
     return test_session
-
-
-@pytest.fixture
-def test_env_var_provider():
-    test_env_var_provider = MockEnvVarProvider()
-    return test_env_var_provider
-
-
-@pytest.fixture
-def test_aws_parameter_store_provider(test_env_var_provider, test_aws_session):
-    test_aws_parameter_store_provider = AwsParameterStoreProvider(env_var_provider=test_env_var_provider,
-                                                                  aws_session=test_aws_session)
-    return test_aws_parameter_store_provider
-
-
-@pytest.fixture
-def test_logging_provider():
-    test_logging_provider = LoggingProvider()
-    return test_logging_provider

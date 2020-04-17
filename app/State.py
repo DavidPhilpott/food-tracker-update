@@ -14,11 +14,12 @@ class State:
 
         self._env_var_provider = env_var_provider
         if env_var_provider is None:
-            self._env_var_provider = EnvVarProvider()
+            self._env_var_provider = EnvVarProvider(logging_provider=self._logging_provider)
 
         self._aws_parameter_store_provider = aws_parameter_store_provider
         if aws_parameter_store_provider is None:
-            self._aws_parameter_store_provider = AwsParameterStoreProvider(self._env_var_provider)
+            self._aws_parameter_store_provider = AwsParameterStoreProvider(logging_provider=self._logging_provider,
+                                                                           env_var_provider=self._env_var_provider)
 
     def get(self, key: str) -> str:
         if not isinstance(key, str):
