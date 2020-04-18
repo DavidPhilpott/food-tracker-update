@@ -32,9 +32,8 @@ def get_all_sheet_values(state, spreadsheet_name: str, worksheet_name: str):
 
 def get_current_date(state) -> None:
     date_index = state.get("date_index")
-    spreadsheet_name = state.get("date_spreadsheet")
-    worksheet_name = state.get("date_worksheet")
-    date_value = get_sheet_cell_value(state, spreadsheet_name, worksheet_name, date_index)
+    worksheet_session = state.get_session('GoogleSheets', state.get('date_spreadsheet'), state.get('date_worksheet'))
+    date_value = worksheet_session.get_cell_value(date_index)
     state.set({"date_value": date_value})
     return
 
@@ -130,8 +129,6 @@ def main():
     state = State()
 
     state.info(__name__, "Establishing spreadsheet and worksheet names...")
-    date_spreadsheet_name = state.get("date_spreadsheet")
-    date_worksheet_name = state.get("date_worksheet")
     daily_manual_spreadsheet_name = state.get("daily_manual_spreadsheet_name")
     daily_manual_worksheet_name = state.get("daily_manual_worksheet_name")
     daily_auto_spreadsheet_name = state.get("daily_auto_spreadsheet_name")
@@ -139,14 +136,13 @@ def main():
     core_spreadsheet_name = state.get("core_spreadsheet_name")
     core_worksheet_name = state.get("core_worksheet_name")
 
+    state.info(__name__, "Opening worksheets.")
     open_google_spreadsheet_connection(state)
-    open_google_worksheet_session(state, date_spreadsheet_name, date_worksheet_name)
-    open_google_worksheet_session(state, daily_manual_spreadsheet_name, daily_manual_worksheet_name)
-    open_google_worksheet_session(state, daily_auto_spreadsheet_name, daily_auto_worksheet_name)
-    open_google_worksheet_session(state, core_spreadsheet_name, core_worksheet_name)
+    open_google_worksheet_session(state, state.get("date_spreadsheet"), state.get("date_worksheet"))
+    open_google_worksheet_session(state, state.get("daily_manual_spreadsheet_name"), state.get("daily_manual_worksheet_name"))
+    open_google_worksheet_session(state, state.get("daily_auto_spreadsheet_name"), state.get("daily_auto_worksheet_name"))
+    open_google_worksheet_session(state, state.get("core_spreadsheet_name"), state.get("core_worksheet_name"))
 
-    state.info(__name__, "Opening food daily and core worksheets...")
-    open_google_worksheet(state, date_spreadsheet_name, date_worksheet_name)
     open_google_worksheet(state, daily_manual_spreadsheet_name, daily_manual_worksheet_name)
     open_google_worksheet(state, daily_auto_spreadsheet_name, daily_auto_worksheet_name)
     open_google_worksheet(state, core_spreadsheet_name, core_worksheet_name)

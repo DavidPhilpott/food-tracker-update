@@ -14,6 +14,9 @@ from app.foodDailyUpdate import transfer_daily_data_to_historical_sheet
 from app.foodDailyUpdate import clean_up_auto_sheet
 from app.foodDailyUpdate import clean_up_manual_sheet
 from app.tests.mock_interfaces.mock_EnvVarProvider import MockEnvVarProvider
+from app.Actions.OpenGoogleWorksheetSession import open_google_worksheet_session
+from app.Actions.OpenGoogleSheetsConnection import open_google_spreadsheet_connection
+
 from app.State import State
 
 
@@ -71,7 +74,8 @@ class TestUpdateCellValue:
 
 class TestGetCurrentDate:
     def test_value_placed_on_state_correctly(self, test_state):
-        open_google_worksheet(test_state, "IntegrationTest", "TestInfo")
+        open_google_spreadsheet_connection(test_state)
+        open_google_worksheet_session(test_state, "IntegrationTest", "TestInfo")
         get_current_date(test_state)
         assert test_state.get("date_value") == "01-Jan-2000"
 
