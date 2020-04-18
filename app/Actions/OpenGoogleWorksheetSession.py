@@ -1,7 +1,7 @@
 from app.Sessions.GoogleWorksheetSession import GoogleWorksheetSession
 
 
-def open_google_worksheet_session(state, spreadsheet_name: str, worksheet_name: str) -> None:
+def open_google_worksheet_session(state, spreadsheet_name: str, worksheet_name: str, session_name: str = None) -> None:
     state.info(__name__, f"Opening Google Worksheet session for {spreadsheet_name} - {worksheet_name}.")
     if not state.has_session("GoogleSheets", spreadsheet_name, worksheet_name):
         state.debug(__name__, f"No existing {spreadsheet_name} - {worksheet_name} on state. Opening a new one.")
@@ -11,7 +11,10 @@ def open_google_worksheet_session(state, spreadsheet_name: str, worksheet_name: 
                                          connection=gsheet_connection,
                                          spreadsheet_name=spreadsheet_name,
                                          worksheet_name=worksheet_name)
-        state.set_session('GoogleSheets', spreadsheet_name, worksheet_name, session)
+        if session_name is not None:
+            state.set_session('GoogleSheets', session_name, session)
+        else:
+            state.set_session('GoogleSheets', spreadsheet_name, worksheet_name, session)
         state.info(__name__, f"Finished opening Google Worksheet session for {spreadsheet_name} - {worksheet_name}.")
     else:
         state.info(__name__, f"Google Worksheet session for {spreadsheet_name} - {worksheet_name} already exists on state.")

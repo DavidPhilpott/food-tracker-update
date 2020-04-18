@@ -75,7 +75,7 @@ class TestUpdateCellValue:
 class TestGetCurrentDate:
     def test_value_placed_on_state_correctly(self, test_state):
         open_google_spreadsheet_connection(test_state)
-        open_google_worksheet_session(test_state, "IntegrationTest", "TestInfo")
+        open_google_worksheet_session(test_state, "IntegrationTest", "TestInfo", 'date_worksheet')
         get_current_date(test_state)
         assert test_state.get("date_value") == "01-Jan-2000"
 
