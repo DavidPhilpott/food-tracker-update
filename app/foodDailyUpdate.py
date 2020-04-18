@@ -2,6 +2,8 @@ import time
 from app.State import State
 from app.Sessions.GoogleSheetConnection import GoogleSheetConnection
 from app.Sessions.GoogleWorksheetSession import GoogleWorksheetSession
+from app.Actions.OpenGoogleWorksheetSession import open_google_worksheet_session
+from app.Actions.OpenGoogleSheetsConnection import open_google_spreadsheet_connection
 
 
 def update_cell_value(state, spreadsheet_name: str, worksheet_name: str, cell_index: str, value: str) -> None:
@@ -136,6 +138,12 @@ def main():
     daily_auto_worksheet_name = state.get("daily_auto_worksheet_name")
     core_spreadsheet_name = state.get("core_spreadsheet_name")
     core_worksheet_name = state.get("core_worksheet_name")
+
+    open_google_spreadsheet_connection(state)
+    open_google_worksheet_session(state, date_spreadsheet_name, date_worksheet_name)
+    open_google_worksheet_session(state, daily_manual_spreadsheet_name, daily_manual_worksheet_name)
+    open_google_worksheet_session(state, daily_auto_spreadsheet_name, daily_auto_worksheet_name)
+    open_google_worksheet_session(state, core_spreadsheet_name, core_worksheet_name)
 
     state.info(__name__, "Opening food daily and core worksheets...")
     open_google_worksheet(state, date_spreadsheet_name, date_worksheet_name)

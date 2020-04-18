@@ -7,5 +7,5 @@ class MockEnvVarProvider:
         return
 
     def get_var(self, variable_name):
-        self._logger.debug(__name__, f"Fetching {variable_name} from OS env...")
+        self._logger.debug(__name__, f"Fetching '{variable_name}' from OS env.")
         return mock_variables[variable_name]

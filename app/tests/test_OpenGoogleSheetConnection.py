@@ -4,4 +4,6 @@ from app.Actions.OpenGoogleSheetsConnection import open_google_spreadsheet_conne
 class TestOpenGoogleSpreadsheetConnection:
     def test_opens_new_connection(self, test_state):
         open_google_spreadsheet_connection(test_state)
-        assert test_state.has_session(session_name="GoogleSheetConnection") is True
+        result = test_state.get_session("GoogleSheets", "Connection")
+
+        assert test_state.has_session("GoogleSheets", "Connection") is True

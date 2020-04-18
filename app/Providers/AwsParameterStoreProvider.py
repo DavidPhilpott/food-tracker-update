@@ -24,21 +24,21 @@ class AwsParameterStoreProvider:
         self._client = client
 
     def get_non_secure_string(self, variable_name):
-        self._logger.debug(__name__, f"Fetching {variable_name} from SSM as non-secure string...")
+        self._logger.debug(__name__, f"Fetching '{variable_name}' from SSM as non-secure string.")
         response = self._client.get_parameter(
             Name=variable_name,
             WithDecryption=False)
         return response['Parameter']['Value']
 
     def get_secure_string(self, variable_name):
-        self._logger.debug(__name__, f"Fetching {variable_name} from SSM as secure string...")
+        self._logger.debug(__name__, f"Fetching {variable_name} from SSM as secure string.")
         response = self._client.get_parameter(
             Name=variable_name,
             WithDecryption=True)
         return response['Parameter']['Value']
 
     def get_secure_pem_key(self, variable_name):
-        self._logger.debug(__name__, f"Fetching {variable_name} from SSM as secure PEM key...")
+        self._logger.debug(__name__, f"Fetching {variable_name} from SSM as secure PEM key.")
         pem_key = self.get_secure_string(variable_name)
         self._logger.debug(__name__, f"Formatting value as PEM...")
         pem_key = pem_key.replace("\\n", "\n")

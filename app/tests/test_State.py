@@ -103,6 +103,21 @@ class TestLogging:
             )
 
 
+class TestAssembleKeyPathFromArgs:
+
+    def test_no_args_passed_throws_error(self, test_state):
+        with pytest.raises(ValueError) as exc_info:
+            test_state._assemble_key_list_from_args()
+            assert exc_info is not None
+
+    def test_assemble_single_arg(self, test_state):
+        assert test_state._assemble_key_list_from_args("GoogleSheets") == ['GoogleSheets']
+
+    def test_assemble_multiple_args(self, test_state):
+        assert test_state._assemble_key_list_from_args("GoogleSheets", "TestSpreadsheet", "TestWorksheet") ==\
+               ['GoogleSheets', 'TestSpreadsheet', 'TestWorksheet']
+
+
 class TestSessions:
     def test_can_find_existing_session(self, test_state):
         test_state._sessions.update({"Test Session": "Test Session Value"})
@@ -110,6 +125,10 @@ class TestSessions:
 
     def test_cannot_find_non_existing_session(self, test_state):
         assert test_state.has_session("Test Session") is False
+
+    def test_can_find_nested_session(self, test_state):
+        test_state._sessions.update({"Test Session": {"Second Layer": "Test Session Value"}})
+        assert test_state.has_session("Test Session", "Second Layer")
 
     def test_cannot_get_non_existing_session(self, test_state):
         with pytest.raises(KeyError) as exc_info:
@@ -120,6 +139,14 @@ class TestSessions:
         test_state._sessions.update({"Test Session": "Test Session Value"})
         assert test_state.get_session("Test Session") == "Test Session Value"
 
+    def test_can_get_nested_session(self, test_state):
+        test_state._sessions.update({"Test Session": {"Second Layer": "Test Session Value"}})
+        assert test_state.get_session("Test Session", "Second Layer") == "Test Session Value"
+
     def test_can_set_session(self, test_state):
-        test_state.set_session({"Test Session": "Test Session Value"})
+        test_state.set_session("Test Session", "Test Session Value")
         assert test_state._sessions == {"Test Session": "Test Session Value"}
+
+    def test_can_set_nested_session(self, test_state):
+        test_state.set_session("Test Session", "Second Layer", "Test Session Value")
+        assert test_state._sessions == {"Test Session": {"Second Layer": "Test Session Value"}}

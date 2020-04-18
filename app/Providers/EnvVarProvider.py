@@ -7,5 +7,5 @@ class EnvVarProvider:
         return
 
     def get_var(self, variable_name: str):
-        self._logger.debug(__name__, f"Fetching {variable_name} from OS env...")
+        self._logger.debug(__name__, f"Fetching '{variable_name}' from OS env.")
         return os.environ[variable_name]
