@@ -33,7 +33,7 @@ def main():
     transfer_daily_data_to_historical_sheet(state)
     state.info(__name__, "Sleeping for 60 seconds...")
     time.sleep(60)
-    
+
     clean_up_auto_sheet(state)
     clean_up_manual_sheet(state)
     state.info(__name__, "Finished running script.")
