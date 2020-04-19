@@ -13,7 +13,13 @@ class LoggingProvider:
 
         self.log_level = "DEBUG"
         if "LOG_LEVEL" in os.environ:
-            self.level = os.environ["LOG_LEVEL"]
+            self.log_level = os.environ["LOG_LEVEL"]
+
+        # Remove handlers on root logger during startup - removes AWS handler causing duplication
+        root = logging.getLogger()
+        if root.handlers:
+            for handler in root.handlers:
+                root.removeHandler(handler)
 
     def _set_logging_handler(self):
         log_handler = logging.StreamHandler()
@@ -26,8 +32,6 @@ class LoggingProvider:
             if len(logger.handlers) == 0:
                 logger.addHandler(self._set_logging_handler())
             logger.setLevel(self.log_level)
-            # Don't propagate logs - this way the AWS handler on the root logger wont duplicate the log
-            logger.propagate = False
             self.loggers.update({name: logger})
         return self.loggers[name]
 

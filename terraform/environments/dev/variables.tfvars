@@ -30,5 +30,5 @@ lambda_environment_variables =  {
   "core_spreadsheet_name": "FoodCore",
   "core_worksheet_name": "Historical Food Tracker",
   "DEFAULT_AWS_REGION": "eu-west-1",
-  "LOG_LEVEL": "INFO"
+  "LOG_LEVEL": "DEBUG"
 }
