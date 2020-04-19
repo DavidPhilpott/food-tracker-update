@@ -33,3 +33,5 @@ lambda_environment_variables =  {
   "DEFAULT_AWS_REGION": "eu-west-1",
   "LOG_LEVEL": "DEBUG"
 }
+
+schedule_expression = "cron(0 23 * * ? *)"

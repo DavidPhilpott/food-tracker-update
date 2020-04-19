@@ -5,7 +5,7 @@ from gspread.exceptions import APIError
 class GoogleWorksheetSession:
     def __init__(self, state, connection, spreadsheet_name, worksheet_name):
         self._state = state
-        self._state.debug(__name__, f"Initialising session for {spreadsheet_name} - {worksheet_name}")
+        self._state.debug(__name__, f"Initialising session for '{spreadsheet_name} - {worksheet_name}'")
         self.__session_details = {
             "spreadsheet_key": self._state.get(f"spreadsheet_key_{spreadsheet_name}"),
             "worksheet_name": worksheet_name
@@ -48,7 +48,7 @@ class GoogleWorksheetSession:
         return self.worksheet.acell(cell_index).value
 
     def get_cell_value(self, cell_index: str):
-        self._state.debug(__name__, f"Getting cell value for {cell_index}.")
+        self._state.debug(__name__, f"Getting cell value for index '{cell_index}'.")
         return self._execute_function(self._get_cell_value, cell_index)
 
     def _get_all_sheet_values(self):
@@ -63,5 +63,5 @@ class GoogleWorksheetSession:
         return
 
     def update_cell_value(self, cell_index: str, cell_value):
-        self._state.debug(__name__, f"Updating cell {cell_index} with value {cell_value}.")
+        self._state.debug(__name__, f"Updating cell '{cell_index}' with value '{cell_value}'.")
         return self._execute_function(self._update_cell_value, cell_index, cell_value)

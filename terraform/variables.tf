@@ -4,6 +4,7 @@ variable "s3_code_bucket" {}
 variable "s3_code_key" {}
 variable "lambda_environment_variables" {}
 variable "lambda_handler"{}
+variable "schedule_expression" {}
 
 
 #Account / role
