@@ -1,11 +1,12 @@
+lambda_name = "food-tracker-lambda"
+description   = "Moves data from daily food tracker to historical tracker."
 s3_code_bucket = "dphilpott-dev-code-bucket"
 s3_code_key = "food-tracker/dev/food-tracker.zip"
-lambda_name = "food-tracker-lambda"
 lambda_handler = "app.foodDailyUpdate.lambda_handler"
 aws_account_id = "020968065558"
 region = "eu-west-1"
 project_name = "food-tracker"
-environment = "dev"
+environment = "prod"
 
 lambda_environment_variables =  {
   "google_auth_type": "service_account",

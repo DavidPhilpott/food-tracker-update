@@ -1,5 +1,6 @@
-APP_NAME="food-tracker"
+APP_NAME="food-tracker-lambda"
 CODE_BUCKET="dphilpott-dev-code-bucket"
+ENV='prod'
 
 echo "Deploying $APP_NAME to dev"
 
@@ -26,21 +27,21 @@ echo "Testing..."
 if pytest -vv ; then
     echo "Test succeeded"
     echo "Uploading archive to S3..."
-    aws s3 cp $APP_NAME.zip s3://$CODE_BUCKET/$APP_NAME/dev/$APP_NAME.zip  && echo "Artifact upload successful!" || echo "Artifact upload failed"
+    aws s3 cp $APP_NAME.zip s3://$CODE_BUCKET/$APP_NAME/$ENV/$APP_NAME.zip  && echo "Artifact upload successful!" || echo "Artifact upload failed"
     echo "Removing build directory..."
     rm -rf temp/
     echo "Removing packaged build..."
     rm -rf $APP_NAME.zip
     echo "Running Terraform..."
     cd terraform
-    terraform init --backend-config=environments/dev/backend.tfvars
-    terraform apply -auto-approve --var-file=environments/dev/variables.tfvars
+    terraform init --backend-config=environments/$ENV/backend.tfvars
+    terraform apply -auto-approve --var-file=environments/$ENV/variables.tfvars
 
     echo "Updating Lambda..."
     aws lambda update-function-code \
-    --function-name $APP_NAME-lambda  \
+    --function-name $APP_NAME-$ENV  \
     --s3-bucket $CODE_BUCKET \
-    --s3-key $APP_NAME/dev/$APP_NAME.zip --no-publish
+    --s3-key $APP_NAME/$ENV/$APP_NAME.zip --no-publish
 else
     echo "Test failed. Retaining build / package."
 fi

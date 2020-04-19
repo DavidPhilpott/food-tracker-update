@@ -1,8 +1,9 @@
 resource "aws_lambda_function" "lambda" {
+  function_name = "${var.lambda_name}-${var.env}"
+  description   = var.description
   depends_on    = [data.aws_iam_policy_document.lambda]
   s3_bucket     = var.s3_code_bucket
   s3_key        = var.s3_code_key
-  function_name = var.lambda_name
   role          = aws_iam_role.lambda.arn
   handler       = var.lambda_handler
 
