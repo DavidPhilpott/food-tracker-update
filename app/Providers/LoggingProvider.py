@@ -26,6 +26,8 @@ class LoggingProvider:
             if len(logger.handlers) == 0:
                 logger.addHandler(self._set_logging_handler())
             logger.setLevel(self.log_level)
+            # Don't propagate logs - this way the AWS handler on the root logger wont duplicate the log
+            logger.propagate = False
             self.loggers.update({name: logger})
         return self.loggers[name]
 

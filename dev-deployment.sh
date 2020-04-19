@@ -13,7 +13,7 @@ docker kill $CONTAINER_ID && echo "Killed container $CONTAINER_ID"
 docker image rm -f pydeplmb
 
 echo "Copying app files to build directory..."
-cp -R app/ temp/build/python
+cp -R app/ temp/build/python/app
 
 echo "Packaging build..."
 cd temp/build/python

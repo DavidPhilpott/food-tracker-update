@@ -22,4 +22,5 @@ def assemble_daily_food_transfer_data(state) -> None:
     state.debug(__name__, f"Transfer data is now: {transfer_data}")
     state.debug(__name__, f"Place transfer data on state.")
     state.set({"food_daily_transfer_data": transfer_data})
+    state.info(__name__, f"Completed assembling data.")
     return
