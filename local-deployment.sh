@@ -2,7 +2,7 @@ APP_NAME="food-tracker-lambda"
 CODE_BUCKET="dphilpott-dev-code-bucket"
 ENV='prod'
 
-echo "Deploying $APP_NAME to dev"
+echo "Deploying $APP_NAME-$ENV to $ENV"
 
 echo "Building Python dependencies in Lambda Docker image..."
 mkdir -p temp/build/
