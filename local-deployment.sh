@@ -1,5 +1,5 @@
 APP_NAME="food-tracker-lambda"
-CODE_BUCKET="dphilpott-dev-code-bucket"
+CODE_BUCKET="dp-code-bucket-prod"
 ENV='prod'
 
 echo "Deploying $APP_NAME-$ENV to $ENV"
